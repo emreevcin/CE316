@@ -57,6 +57,25 @@ public class Database {
         }
     }
 
+    // It returns a project_title from projects table
+    public ArrayList<String> getProjectTitles() throws SQLException {
+        ArrayList<String> projectTitles = new ArrayList<>();
+        String query = "SELECT project_title FROM projects";
+
+        selectSQL = conn.prepareStatement(query);
+        ResultSet rs = selectSQL.executeQuery();
+        while (rs.next()) {
+            String projectTitle = rs.getString("project_title");
+            projectTitles.add(projectTitle);
+        }
+        rs.close();
+        selectSQL.close();
+
+        System.out.println(projectTitles);
+
+        return projectTitles;
+    }
+
     // It returns a configuration_title from configurations table
     public ArrayList<String> getCfgTitles() throws SQLException {
         ArrayList<String> cfgTitles = new ArrayList<>();
@@ -70,6 +89,8 @@ public class Database {
         }
         rs.close();
         selectSQL.close();
+
+        System.out.println(cfgTitles);
 
         return cfgTitles;
     }

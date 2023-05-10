@@ -25,7 +25,9 @@ public class Controller implements Initializable {
     // database
     Database d = Database.getInstance();
     // variables
+    // TODO: Types of the ArrayLists should be converted to corresponding objects
     ArrayList<String> cfgTitles = new ArrayList<>();
+    ArrayList<String> projectTitles = new ArrayList<>();
     @FXML
     private VBox landingPage;
     @FXML
@@ -85,6 +87,8 @@ public class Controller implements Initializable {
         try {
             cfgTitles.addAll(d.getCfgTitles());
             configBox.getItems().addAll(cfgTitles);
+            projectTitles.addAll(d.getProjectTitles());
+            projectBoxSubmission.getItems().addAll(projectTitles);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -256,6 +260,7 @@ public class Controller implements Initializable {
         Project p = new Project(title,config);
         d.addProject(p);
         projectBoxResults.getItems().add(p.getTitle());
+        projectTitles.add(p.getTitle());
         projectBoxSubmission.getItems().add(p.getTitle());
         Executor.projects.add(p);
 
