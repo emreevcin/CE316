@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class Controller implements Initializable {
     // database
     Database d = Database.getInstance();
     // variables
+    ArrayList<String> cfgTitles = new ArrayList<>();
     @FXML
     private VBox landingPage;
     @FXML
@@ -79,6 +81,13 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Database:"+d);
+
+        try {
+            cfgTitles.addAll(d.getCfgTitles());
+            configBox.getItems().addAll(cfgTitles);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         // table view initializing
 
@@ -199,7 +208,7 @@ public class Controller implements Initializable {
         p.getSubmissions().add(s);
         fileListSubmission.getItems().clear();
     }
-    public void submitConfiguration(){
+    public void submitConfiguration() throws SQLException {
         String title = configTitle.getText();
         String commandLib = configCommandLib.getText();
         String commandArgs = configCommandArgs.getText();
@@ -236,14 +245,16 @@ public class Controller implements Initializable {
         // Creates an entity in configurations table
         d.addCfg(c);
         HashMap<String,String> info = Executor.executeConfiguration(c);
+        cfgTitles.add(c.getTitle());
         configBox.getItems().add(c.getTitle());
         Executor.configurations.add(c);
         c.setOutput(info.get("output"));
     }
-    public void submitProject(){
+    public void submitProject() throws SQLException {
         String title = projectTitle.getText();
         Configuration config = findConfiguration(configBox.getValue());
         Project p = new Project(title,config);
+        d.addProject(p);
         projectBoxResults.getItems().add(p.getTitle());
         projectBoxSubmission.getItems().add(p.getTitle());
         Executor.projects.add(p);
