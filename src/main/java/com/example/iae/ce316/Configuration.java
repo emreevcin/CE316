@@ -12,7 +12,7 @@ public class Configuration {
     private final String lang;
     private final String lib;
 
-    public Configuration(String title, String lang, ArrayList<String> files,String lib ,String args ) {
+    public Configuration(String title, String lang, ArrayList<String> files, String lib, String args) {
         this.title = title;
         this.files = files;
         this.args = args;

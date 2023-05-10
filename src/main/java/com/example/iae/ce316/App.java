@@ -3,13 +3,9 @@ package com.example.iae.ce316;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import java.io.File;
+import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class App extends Application {
     @Override
