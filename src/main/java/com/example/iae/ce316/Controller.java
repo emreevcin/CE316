@@ -2,9 +2,13 @@ package com.example.iae.ce316;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -12,6 +16,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -61,6 +66,13 @@ public class Controller implements Initializable {
     private TextArea configOutput;
     @FXML
     private TextArea submissionOutput;
+    @FXML
+    private VBox configPageList ;
+    @FXML
+    private VBox configPageAdd ;
+    @FXML
+    private VBox configList ;
+
 
 
     // initializing ui elements
@@ -258,8 +270,31 @@ public class Controller implements Initializable {
         configOutput.setText(p.getConfiguration().getOutput());
 
     }
+    public void openConfigurationListPage(){
+        configPageList.setVisible(true);
+        configPageAdd.setVisible(false);
+
+        for (int i = 0; i < Executor.configurations.size(); i++) {
+            HBox hBox = new HBox();
+            hBox.setSpacing(10);
+            hBox.setAlignment(Pos.CENTER_LEFT);
+            hBox.setPadding(new Insets(10, 10, 10, 10));
+            Label title = new Label(Executor.configurations.get(i).getTitle());
+            title.setPrefWidth(200);
+            ImageView delete = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/delete.png")))); // path wrong I will change it : Emre Ö.
+            ImageView edit = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/edit.png"))));
+            delete.setFitHeight(20);
+            delete.setFitWidth(20);
+            edit.setFitHeight(20);
+            edit.setFitWidth(20);
+            hBox.getChildren().addAll(title, delete, edit);
+        }
 
 
-
+    }
+    public void openConfigurationAddPage(){
+        configPageList.setVisible(false);
+        configPageAdd.setVisible(true);
+    }
 
 }

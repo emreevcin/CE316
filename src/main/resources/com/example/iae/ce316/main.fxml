@@ -65,7 +65,7 @@
          </children></VBox>
       <StackPane prefHeight="800.0" prefWidth="256.0" HBox.hgrow="ALWAYS">
          <children>
-            <VBox fx:id="landingPage" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="landingPage" prefHeight="200.0" prefWidth="100.0" visible="false">
                <children>
                   <VBox maxHeight="200.0" prefHeight="150.0">
                      <children>
@@ -288,7 +288,7 @@
                      </padding>
                   </VBox>
                </children></VBox>
-            <VBox fx:id="configurationPage" prefHeight="200.0" prefWidth="100.0" stylesheets="@../../../../css/button.css" visible="false">
+            <VBox fx:id="configurationPage" prefHeight="200.0" prefWidth="100.0" stylesheets="@../../../../css/button.css">
                <children>
                   <HBox prefHeight="120.0">
                      <children>
@@ -304,157 +304,196 @@
                               <Insets left="40.0" />
                            </padding>
                         </VBox>
+                        <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox onMouseClicked="#openConfigurationAddPage" prefHeight="200.0" prefWidth="200.0" styleClass="button">
+                                 <children>
+                                    <Label text="New Configuration" textFill="WHITE" />
+                                 </children>
+                              </VBox>
+                              <VBox onMouseClicked="#openConfigurationListPage" prefHeight="200.0" prefWidth="200.0" styleClass="button">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <Label text="Configuration List" textFill="WHITE" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets right="100.0" />
+                           </padding>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="40.0" top="40.0" />
                      </padding>
                   </HBox>
-                  <VBox VBox.vgrow="ALWAYS">
+                  <StackPane VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" stylesheets="@../../../../css/container.css" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="configPageAdd">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-                                 <padding>
-                                    <Insets left="30.0" top="30.0" />
-                                 </padding>
+                              <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" stylesheets="@../../../../css/container.css" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <HBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <padding>
+                                          <Insets left="30.0" top="30.0" />
+                                       </padding>
                                        <children>
+                                          <HBox>
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <Label text="Title" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="12.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <TextField fx:id="configTitle" prefHeight="48.0" prefWidth="400.0" style="-fx-background-radius: 50;">
+                                                         <padding>
+                                                            <Insets left="12.0" />
+                                                         </padding>
+                                                      </TextField>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="100.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                                <VBox>
+                                                   <children>
+                                                      <Label text="Language" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="12.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <HBox>
+                                                         <children>
+                                                            <ChoiceBox fx:id="langBox" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50;" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
                                           <VBox>
                                              <children>
-                                                <Label text="Title" textFill="WHITE">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
+                                                <HBox>
                                                    <VBox.margin>
                                                       <Insets bottom="12.0" />
                                                    </VBox.margin>
-                                                </Label>
-                                                <TextField fx:id="configTitle" prefHeight="48.0" prefWidth="400.0" style="-fx-background-radius: 50;">
+                                                   <children>
+                                                      <Label text="Select Files" textFill="WHITE">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ImageView fitHeight="32.0" fitWidth="48.0" onMouseClicked="#addFileConfiguration" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../../icons/AddIcon.png" />
+                                                         </image>
+                                                         <HBox.margin>
+                                                            <Insets left="12.0" />
+                                                         </HBox.margin>
+                                                      </ImageView>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <ListView fx:id="fileListConfiguration" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                   </children>
                                                    <padding>
-                                                      <Insets left="12.0" />
+                                                      <Insets right="300.0" />
                                                    </padding>
-                                                </TextField>
+                                                </HBox>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets right="100.0" />
-                                             </HBox.margin>
+                                             <VBox.margin>
+                                                <Insets bottom="20.0" top="20.0" />
+                                             </VBox.margin>
                                           </VBox>
                                           <VBox>
                                              <children>
-                                                <Label text="Language" textFill="WHITE">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
+                                                <Label text="Command" textFill="WHITE">
                                                    <VBox.margin>
                                                       <Insets bottom="12.0" />
                                                    </VBox.margin>
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
                                                 </Label>
-                                                <HBox>
+                                                <HBox alignment="CENTER_LEFT">
                                                    <children>
-                                                      <ChoiceBox fx:id="langBox" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50;" />
+                                                      <VBox>
+                                                         <children>
+                                                            <TextField fx:id="configCommandLib" prefHeight="48.0" prefWidth="400.0" promptText="-ln -o app" style="-fx-background-radius: 50;">
+                                                               <padding>
+                                                                  <Insets left="12.0" />
+                                                               </padding>
+                                                               <VBox.margin>
+                                                                  <Insets top="20.0" />
+                                                               </VBox.margin>
+                                                            </TextField>
+                                                            <TextField fx:id="configCommandArgs" prefHeight="48.0" prefWidth="400.0" promptText="ARGS" style="-fx-background-radius: 50;">
+                                                               <padding>
+                                                                  <Insets left="12.0" />
+                                                               </padding>
+                                                               <VBox.margin>
+                                                                  <Insets top="20.0" />
+                                                               </VBox.margin>
+                                                            </TextField>
+                                                         </children>
+                                                      </VBox>
                                                    </children>
                                                 </HBox>
                                              </children>
                                           </VBox>
                                        </children>
-                                    </HBox>
-                                    <VBox>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="80.0">
                                        <children>
-                                          <HBox>
-                                             <VBox.margin>
-                                                <Insets bottom="12.0" />
-                                             </VBox.margin>
+                                          <VBox alignment="CENTER" maxHeight="80.0" maxWidth="120.0" onMouseClicked="#submitConfiguration" prefHeight="200.0" prefWidth="36.0" styleClass="button" stylesheets="@../../../../css/button.css">
                                              <children>
-                                                <Label text="Select Files" textFill="WHITE">
+                                                <Label text="Submit" textFill="WHITE">
                                                    <font>
-                                                      <Font size="18.0" />
+                                                      <Font size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <ImageView fitHeight="32.0" fitWidth="48.0" onMouseClicked="#addFileConfiguration" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../../../icons/AddIcon.png" />
-                                                   </image>
-                                                   <HBox.margin>
-                                                      <Insets left="12.0" />
-                                                   </HBox.margin>
-                                                </ImageView>
                                              </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT">
-                                             <children>
-                                                <ListView fx:id="fileListConfiguration" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                             </children>
-                                             <padding>
-                                                <Insets right="300.0" />
-                                             </padding>
-                                          </HBox>
+                                          </VBox>
                                        </children>
-                                       <VBox.margin>
-                                          <Insets bottom="20.0" top="20.0" />
-                                       </VBox.margin>
-                                    </VBox>
-                                    <VBox>
-                                       <children>
-                                          <Label text="Command" textFill="WHITE">
-                                             <VBox.margin>
-                                                <Insets bottom="12.0" />
-                                             </VBox.margin>
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <HBox alignment="CENTER_LEFT">
-                                             <children>
-                                                <VBox>
-                                                   <children>
-                                                      <TextField fx:id="configCommandLib" prefHeight="48.0" prefWidth="400.0" promptText="-ln -o app" style="-fx-background-radius: 50;">
-                                                         <padding>
-                                                            <Insets left="12.0" />
-                                                         </padding>
-                                                         <VBox.margin>
-                                                            <Insets top="20.0" />
-                                                         </VBox.margin>
-                                                      </TextField>
-                                                      <TextField fx:id="configCommandArgs" prefHeight="48.0" prefWidth="400.0" promptText="ARGS" style="-fx-background-radius: 50;">
-                                                         <padding>
-                                                            <Insets left="12.0" />
-                                                         </padding>
-                                                         <VBox.margin>
-                                                            <Insets top="20.0" />
-                                                         </VBox.margin>
-                                                      </TextField>
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                       </children>
+                                       <padding>
+                                          <Insets bottom="16.0" right="12.0" top="20.0" />
+                                       </padding>
                                     </VBox>
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="80.0">
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="40.0" right="100.0" />
+                           </padding>
+                        </VBox>
+                        <VBox fx:id="configPageList" prefHeight="200.0" prefWidth="100.0" visible="false">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" stylesheets="@../../../../css/container.css" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <VBox alignment="CENTER" maxHeight="80.0" maxWidth="120.0" onMouseClicked="#submitConfiguration" prefHeight="200.0" prefWidth="36.0" styleClass="button" stylesheets="@../../../../css/button.css">
-                                       <children>
-                                          <Label text="Submit" textFill="WHITE">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </VBox>
+                                    <VBox fx:id="configList" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                                  </children>
                                  <padding>
-                                    <Insets bottom="16.0" right="12.0" top="20.0" />
+                                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                                  </padding>
                               </VBox>
                            </children>
+                           <padding>
+                              <Insets bottom="20.0" left="40.0" right="100.0" />
+                           </padding>
                         </VBox>
                      </children>
-                     <padding>
-                        <Insets bottom="20.0" left="40.0" right="100.0" />
-                     </padding>
-                  </VBox>
+                  </StackPane>
                </children>
             </VBox>
             <VBox fx:id="projectPage" prefHeight="200.0" prefWidth="100.0" visible="false">
