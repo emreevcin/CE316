@@ -1,0 +1,63 @@
+
+.vbox {
+    -fx-background-color: linear-gradient(to bottom, #3E54AC, #98A8F8);
+    -fx-background-radius: 10;
+    -fx-border-width: 1;
+}
+
+.list-view {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+}
+
+.list-view .list-cell {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-font-size: 16pt;
+    -fx-text-overrun: ellipsis;
+    -fx-wrap-text: true;
+    -fx-text-fill: #3E54AC;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.list-view .list-cell:even {
+    -fx-background-color:  #BCCEF8;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+.list-view .list-cell: hover {
+    -fx-background-color: #3E54AC;
+    -fx-text-fill: white;
+}
+
+.list-view .virtual-flow .scroll-bar:vertical,
+.list-view .virtual-flow .scroll-bar:vertical .track,
+.list-view .virtual-flow .scroll-bar:vertical .track-background,
+.list-view .virtual-flow .scroll-bar:horizontal,
+.list-view .virtual-flow .scroll-bar:horizontal .track,
+.list-view .virtual-flow .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+}
+
+.list-view .virtual-flow .scroll-bar .increment-button,
+.list-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding: 2;
+}
+
+.list-view .virtual-flow .scroll-bar:vertical .thumb{
+    -fx-background-color:  linear-gradient(to bottom, #3E54AC, #98A8F8);
+}
+.list-view .virtual-flow .scroll-bar:horizontal .thumb {
+    -fx-background-color:  linear-gradient(to right, #3E54AC, #98A8F8);
+}
+
+

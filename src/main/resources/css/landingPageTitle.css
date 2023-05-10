@@ -1,0 +1,24 @@
+* > *{
+    -fx-background-color: linear-gradient(to bottom, #3E54AC, #98A8F8);
+    -fx-background-radius: 0 0 9999 0;
+    -fx-border-color: linear-gradient(to bottom, #3E54AC, #98A8F8);
+    -fx-border-radius: 0 0 9999 0;
+    -fx-padding: 0 0 0 0;
+    -fx-font-size: 18pt;
+    -fx-text-fill: white;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+
+}
+
+* > .label{
+    -fx-font-family: "Arial";
+    -fx-background-color: transparent;
+    -fx-background-radius: 50;
+    -fx-border-color: transparent;
+    -fx-border-radius: 50;
+    -fx-padding: 0 0 0 30;
+    -fx-font-size: 18pt;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}

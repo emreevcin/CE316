@@ -1,0 +1,21 @@
+
+.choice-box > .label {
+    -fx-background-color: linear-gradient(to bottom, #3E54AC, #98A8F8);
+    -fx-background-radius: 50;
+    -fx-border-color: transparent;
+    -fx-border-radius: 50;
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+    -fx-text-alignment: justify;
+
+}
+
+.choice-box > .arrow-button {
+    -fx-background-color: white;
+    -fx-background-radius: 50;
+    -fx-border-color: transparent;
+    -fx-border-radius: 50;
+    -fx-padding: 0 0 0 0;
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+}

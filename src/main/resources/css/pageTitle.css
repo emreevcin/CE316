@@ -1,0 +1,20 @@
+* > *{
+    -fx-background-color: linear-gradient(to bottom, #3E54AC, #98A8F8);
+    -fx-background-radius: 15px;
+    -fx-padding: 0 0 0 0;
+    -fx-font-size: 18pt;
+    -fx-text-fill: white;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+* > .label{
+    -fx-font-family: "Arial";
+    -fx-background-color: transparent;
+    -fx-background-radius: 50;
+    -fx-border-color: transparent;
+    -fx-border-radius: 50;
+    -fx-padding: 0 0 0 30;
+    -fx-font-size: 18pt;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
