@@ -28,7 +28,6 @@ public class Database {
                 stat.executeUpdate("CREATE TABLE configurations(" +
                         "configuration_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "configuration_title VARCHAR(50)," +
-                        "configuration_directory VARCHAR(100)," +
                         "programming_language VARCHAR(10)," +
                         "lecturer_code_path VARCHAR(100)," +
                         "lib VARCHAR(100)," +
@@ -52,14 +51,28 @@ public class Database {
                         "FOREIGN KEY (project_id) REFERENCES projects(project_id));");
             }
 
-            /*
-            insertSQL = conn.prepareStatement("");
-            selectSQL = conn.prepareStatement("");
-             */
-
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e);
         }
+    }
+
+    // It is an insert query to create an entity in configuration table
+    public void addCfg(Configuration c) {
+        try {
+            insertSQL = conn.prepareStatement("INSERT INTO configurations(configuration_title, programming_language, lecturer_code_path, lib, args) VALUES (?, ?, ?, ?, ?)");
+
+            insertSQL.setString(1, c.getTitle());
+            insertSQL.setString(2, c.getLang());
+            insertSQL.setString(3, c.getDirectory());
+            insertSQL.setString(4, c.getLib());
+            insertSQL.setString(5, c.getArgs());
+            insertSQL.executeUpdate();
+
+            System.out.println("Configuration entity added successfully!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static Database instance = null;

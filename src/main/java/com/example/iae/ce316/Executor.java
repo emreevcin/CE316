@@ -14,6 +14,7 @@ public class Executor {
         // TODO: set configuration directory
         // TODO: change pb.directory() to configuration.getDirectory()
         // TODO: Emre ÖZOĞUL - I set path as "C:\\Users\\emred\\OneDrive\\Masaüstü" for testing purposes , you can change it to your wish.
+        // Emre Evcin - I also have changed directory to my absolute path (Be careful!)
 
 
         HashMap<String,String> executionInfo = new HashMap<>();
@@ -26,7 +27,7 @@ public class Executor {
 
         StringBuilder stringBuilder = new StringBuilder();
         ProcessBuilder pb = new ProcessBuilder();
-        pb.directory(new File("C:\\Users\\emred\\OneDrive\\Masaüstü"));
+        pb.directory(new File("C:\\Users\\EMRE\\Desktop\\Projects\\Hello World"));
 
         if(lang.equals("C")){
             String command = commands[0];
@@ -120,7 +121,7 @@ public class Executor {
 
         StringBuilder stringBuilder = new StringBuilder();
         ProcessBuilder pb = new ProcessBuilder();
-        pb.directory(new File("C:\\Users\\emred\\OneDrive\\Masaüstü"));
+        pb.directory(new File("C:\\Users\\EMRE\\Desktop\\Projects\\Hello World"));
 
         if(lang.equals("C")){
             String command = commands[0];

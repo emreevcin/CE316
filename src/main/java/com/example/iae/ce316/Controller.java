@@ -231,6 +231,10 @@ public class Controller implements Initializable {
         ArrayList<String> fileList = new ArrayList<>(fileListConfiguration.getItems());
 
         Configuration c = new Configuration(title,langBox.getValue(),fileList,commandLib,commandArgs);
+        // Creates com/example/iae/ce316/files/<title>.json
+        JsonFileHandler.createJSONFile(c);
+        // Creates an entity in configurations table
+        d.addCfg(c);
         HashMap<String,String> info = Executor.executeConfiguration(c);
         configBox.getItems().add(c.getTitle());
         Executor.configurations.add(c);

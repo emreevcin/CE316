@@ -18,6 +18,7 @@ public class Configuration {
         this.args = args;
         this.lang = lang;
         this.lib = lib;
+        directory = "src\\main\\java\\com\\example\\iae\\ce316\\files\\" + title + ".json";
         this.commands = makeCommand(this.lang,this.files,this.lib,this.args);
     }
 

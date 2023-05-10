@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class JsonFileHandler {
 
@@ -39,15 +40,27 @@ public class JsonFileHandler {
      * @param object the Java object to serialize
      * @throws IOException if there is an error writing to the file
      */
-    public static void writeJsonFile(File file, Object object) throws IOException {
+    private static void writeJsonFile(File file, Object object) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             gson.toJson(object, writer);
         }
     }
 
+    // TODO: First the program terminates then corresponding json file is added into directory. Handle it.
+    public static void createJSONFile(Configuration configuration) {
+        try {
+            String currentDir = System.getProperty("user.dir");
+            String filePath = currentDir + "/src/main/java/com/example/iae/ce316/files/" + configuration.getTitle() + ".json";
+            writeJsonFile(new File(filePath), configuration);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /***
     public static void main(String[] args) throws IOException {
 
-        /***Example usage for reading the JSON file into a Java object
+        Example usage for reading the JSON file into a Java object
 
          Configuration read = readJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), Configuration.class);
          System.out.println(read.getFiles());
@@ -71,6 +84,6 @@ public class JsonFileHandler {
         // Write the Java object to a JSON file
         writeJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), configuration);
 
-         ***/
     }
+         ***/
 }
