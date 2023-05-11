@@ -9,23 +9,19 @@ public class Submission {
     private String error;
     private String output;
     private String status;
-    private final ArrayList<String> files ;
     private final Project project;
     private ImageView statusImage;
     private String directory;
     private String[] commands;
 
-    public Submission(Project project,ArrayList<String> files) {
-        this.files = files;
+    public Submission(Project project,String directory) {
+        this.studentID = directory;
+        this.directory = directory;
         this.project = project;
     }
 
     public String getStudentID() {
         return studentID;
-    }
-
-    public ArrayList<String> getFiles() {
-        return files;
     }
 
     public Project getProject() {
@@ -78,8 +74,7 @@ public class Submission {
 
     public void setCommands(){
         Configuration configuration = this.project.getConfiguration();
-        ArrayList<String> files = this.files;
-        String[] commands = Configuration.makeCommand(configuration.getLang(),files,configuration.getLib(),configuration.getArgs());
+        String[] commands = Configuration.makeCommand(configuration.getLang(),configuration.getLib(),configuration.getArgs());
         this.commands = commands;
 
     }

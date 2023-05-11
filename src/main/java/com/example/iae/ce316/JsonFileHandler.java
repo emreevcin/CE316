@@ -50,17 +50,18 @@ public class JsonFileHandler {
     public static void createJSONFile(Configuration configuration) {
         try {
             String currentDir = System.getProperty("user.dir");
-            String filePath = currentDir + "/src/main/java/com/example/iae/ce316/files/" + configuration.getTitle() + ".json";
+            String filePath = currentDir + "\\" +configuration.getDirectory()+"\\"+ configuration.getTitle() + ".json";
+            System.out.println(filePath);
             writeJsonFile(new File(filePath), configuration);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    /***
+
     public static void main(String[] args) throws IOException {
 
-        Example usage for reading the JSON file into a Java object
+         /*** Example usage for reading the JSON file into a Java object
 
          Configuration read = readJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), Configuration.class);
          System.out.println(read.getFiles());
@@ -68,15 +69,14 @@ public class JsonFileHandler {
 
          ***/
 
-        /*** Example usage for writing a JSON file as a Java object
+
         String directory = "src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json";
         String title = "Config";
         String lang = "C";
         String output = "Hello World";
         String lib = "";
         String Args = "";
-        ArrayList<String> files = new ArrayList<String>();
-        Configuration configuration = new Configuration(title,lang,files,lib,Args);
+        Configuration configuration = new Configuration(title,lang,lib,Args,directory);
         configuration.setOutput(output);
         configuration.setDirectory(directory);
         System.out.println(configuration);
@@ -85,5 +85,5 @@ public class JsonFileHandler {
         writeJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), configuration);
 
     }
-         ***/
+
 }

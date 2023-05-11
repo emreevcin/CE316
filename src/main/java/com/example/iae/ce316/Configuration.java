@@ -1,25 +1,24 @@
 package com.example.iae.ce316;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Configuration {
     private final String title ;
-    private String directory;
+    private static String directory;
     private String output;
     private final String[] commands ;
     private final String args ;
-    private final ArrayList<String> files ;
     private final String lang;
     private final String lib;
 
-    public Configuration(String title, String lang, ArrayList<String> files, String lib, String args) {
+    public Configuration(String title, String lang, String lib, String args,String directory) {
         this.title = title;
-        this.files = files;
         this.args = args;
         this.lang = lang;
         this.lib = lib;
-        directory = "src\\main\\java\\com\\example\\iae\\ce316\\files\\" + title + ".json";
-        this.commands = makeCommand(this.lang,this.files,this.lib,this.args);
+        this.directory = directory;
+        this.commands = makeCommand(this.lang,this.lib,this.args);
     }
 
     public String getTitle() {
@@ -36,10 +35,6 @@ public class Configuration {
 
     public String getArgs() {
         return args;
-    }
-
-    public ArrayList<String> getFiles() {
-        return files;
     }
 
     public String getLang() {
@@ -62,17 +57,37 @@ public class Configuration {
         this.output = output;
     }
 
-    public static String[] makeCommand(String lang, ArrayList<String> files , String lib, String args) {
+    public static String[] makeCommand(String lang, String lib, String args) {
         String command1 = "";
         String command2 = "";
         String[] commands = new String[2];
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i <files.size() ; i++) {
-            sb.append(files.get(i));
-            sb.append(" ");
+        File dir = new File(directory);
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                if(child.getName().endsWith(".c")){
+                    sb.append(child.getName());
+                    sb.append(" ");
+                }
+                else if(child.getName().endsWith(".java")){
+                    sb.append(child.getName());
+                    sb.append(" ");
+                }
+                else if(child.getName().endsWith(".cpp")){
+                    sb.append(child.getName());
+                    sb.append(" ");
+                }
+                else if(child.getName().endsWith(".py")){
+                    sb.append(child.getName());
+                    sb.append(" ");
+                }
+            }
         }
         String filesString = sb.toString();
+
         if(lang.equals("C")){
+            // for every file in the directory with a suffix of .c, add it to the command
             command1 ="gcc "+filesString +" " +lib +" " +args;
             commands[0] = command1;
             commands[1] = command2;

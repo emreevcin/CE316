@@ -11,11 +11,6 @@ public class Executor {
     private Executor() {}
 
     public static HashMap<String,String> executeSubmission(Submission submission) {
-        // TODO: set configuration directory
-        // TODO: change pb.directory() to configuration.getDirectory()
-        // TODO: Emre ÖZOĞUL - I set path as "C:\\Users\\emred\\OneDrive\\Masaüstü" for testing purposes , you can change it to your wish.
-        // Emre Evcin - I also have changed directory to my absolute path (Be careful!)
-
 
         HashMap<String,String> executionInfo = new HashMap<>();
         String exitCode = "";
@@ -27,7 +22,7 @@ public class Executor {
 
         StringBuilder stringBuilder = new StringBuilder();
         ProcessBuilder pb = new ProcessBuilder();
-        pb.directory(new File("C:\\Users\\EMRE\\Desktop\\Projects\\Hello World"));
+        pb.directory(new File(directory));
 
         if(lang.equals("C")){
             String command = commands[0];
@@ -108,9 +103,6 @@ public class Executor {
         return executionInfo;
     }
     public static HashMap<String,String> executeConfiguration(Configuration configuration) {
-        // TODO: set configuration directory
-        // TODO: change pb.directory() to configuration.getDirectory()
-
 
         HashMap<String,String> executionInfo = new HashMap<>();
         String exitCode = "";
@@ -121,7 +113,7 @@ public class Executor {
 
         StringBuilder stringBuilder = new StringBuilder();
         ProcessBuilder pb = new ProcessBuilder();
-        pb.directory(new File("C:\\Users\\EMRE\\Desktop\\Projects\\Hello World"));
+        pb.directory(new File(directory));
 
         if(lang.equals("C")){
             String command = commands[0];
@@ -201,12 +193,6 @@ public class Executor {
 
         return executionInfo;
     }
-
-    public static void executeAll() {
-        // TODO: implement this method
-
-    }
-
     public static boolean compare(Submission submission){
         Configuration configuration = submission.getProject().getConfiguration();
         String configOutput = configuration.getOutput();

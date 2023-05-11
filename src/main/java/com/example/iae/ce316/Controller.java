@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -76,6 +78,9 @@ public class Controller implements Initializable {
     private VBox configPageAdd ;
     @FXML
     private VBox configList ;
+
+    private HashMap<String, String> configFileMap = new HashMap<>();
+    private HashMap<String, String> subFileMap = new HashMap<>();
 
 
 
@@ -150,35 +155,47 @@ public class Controller implements Initializable {
         configurationPage.setVisible(false);
         projectPage.setVisible(true);
     }
-    public void addFileSubmission(){
+    public void addFileSubmission() throws IOException {
         String[] fileDetails = addFile();
         //fileDetails[0] = file name , fileDetails[1] = file path
         if(fileDetails != null){
             fileListSubmission.getItems().add(fileDetails[0]);
+            subFileMap.put(fileDetails[0],fileDetails[1]);
         }
     }
-    public void addFileConfiguration(){
+    public void addFileConfiguration() throws IOException {
         String[] fileDetails = addFile();
         //fileDetails[0] = file name , fileDetails[1] = file path
         if(fileDetails != null){
             fileListConfiguration.getItems().add(fileDetails[0]);
+            configFileMap.put(fileDetails[0],fileDetails[1]);
         }
     }
     private String[] addFile(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Upload File");
         File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            String[] fileDetails = new String[2];
-            fileDetails[0] = file.getName();
-            fileDetails[1] = file.getAbsolutePath();
-            return fileDetails;
+        if(file == null){
+            return null;
         }
+        // check suffix of file is .zip  , then if it is not zip file , show error
+        String suffix = file.getName().substring(file.getName().lastIndexOf("."));
+        if(!suffix.equals(".zip")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("File type not supported");
+            alert.setContentText("Please select a .zip file");
+            alert.showAndWait();
+            return null;
+        }
+        String[] fileDetails = new String[2];
+        fileDetails[0] = file.getName();
+        fileDetails[1] = file.getAbsolutePath();
+        return fileDetails;
 
-        return null;
     }
 
-    public void submitSubmission(){
+    public void submitSubmission() throws IOException {
         String projectTitle = projectBoxSubmission.getValue();
         Project p = findProject(projectTitle);
         if(p == null){
@@ -193,26 +210,48 @@ public class Controller implements Initializable {
             alert.showAndWait();
             return;
         }
-        ArrayList<String> fileList = new ArrayList<>(fileListSubmission.getItems());
-        Submission s = new Submission(p, fileList);
+        String fileName = fileListSubmission.getItems().get(0);
+        String filePath = subFileMap.get(fileName);
+
+        ZipHandler.unzip(new File(filePath),1);
+
+        String directory = "src/main/submissions/"+fileName.substring(0,fileName.lastIndexOf("."));
+
+        Submission s = new Submission(p, directory);
         s.setCommands();
         HashMap<String,String> info = Executor.executeSubmission(s);
         if(info.get("output") != null){
             s.setOutput(info.get("output"));
         }
         boolean isOk = Executor.compare(s);
-        if(isOk){
-            s.setStatus("OK");
-            s.setStatusImage(new ImageView("icons/ok.png"));
+        try {
+            if (isOk) {
+                String imageUrl = getClass().getResource("/icons/ok.png").toExternalForm();
+                if (imageUrl != null) {
+                    Image okImage = new Image(imageUrl);
+                    s.setStatus("OK");
+                    s.setStatusImage(new ImageView(okImage));
+                } else {
+                    System.out.println("Error: Failed to load image file: " + imageUrl);
+                }
+            } else {
+                String deniedURL = getClass().getResource("/icons/denied.png").toExternalForm();
+                if (deniedURL != null) {
+                    Image deniedImage = new Image(deniedURL);
+                    s.setStatus("Error");
+                    s.setStatusImage(new ImageView(deniedImage));
+                } else {
+                    System.out.println("Error: Failed to load image file: " + deniedURL);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else{
-            s.setStatus("Error");
-            s.setStatusImage(new ImageView("icons/denied.png"));
-        }
+
         p.getSubmissions().add(s);
         fileListSubmission.getItems().clear();
     }
-    public void submitConfiguration() throws SQLException {
+    public void submitConfiguration() throws SQLException, IOException {
         String title = configTitle.getText();
         String commandLib = configCommandLib.getText();
         String commandArgs = configCommandArgs.getText();
@@ -240,19 +279,25 @@ public class Controller implements Initializable {
             alert.showAndWait();
             return;
         }
+        String fileName = fileListConfiguration.getItems().get(0);
+        String filePath = configFileMap.get(fileName);
 
-        ArrayList<String> fileList = new ArrayList<>(fileListConfiguration.getItems());
+        ZipHandler.unzip(new File(filePath),0);
 
-        Configuration c = new Configuration(title,langBox.getValue(),fileList,commandLib,commandArgs);
+        String directory = "src/main/configurations/"+fileName.substring(0,fileName.lastIndexOf("."));
+
+        Configuration configuration = new Configuration(title,langBox.getValue(),commandLib,commandArgs,directory);
+
+
         // Creates com/example/iae/ce316/files/<title>.json
-        JsonFileHandler.createJSONFile(c);
+        JsonFileHandler.createJSONFile(configuration); // ??
         // Creates an entity in configurations table
-        d.addCfg(c);
-        HashMap<String,String> info = Executor.executeConfiguration(c);
-        cfgTitles.add(c.getTitle());
-        configBox.getItems().add(c.getTitle());
-        Executor.configurations.add(c);
-        c.setOutput(info.get("output"));
+        d.addCfg(configuration);
+        HashMap<String,String> info = Executor.executeConfiguration(configuration);
+        cfgTitles.add(configuration.getTitle());
+        configBox.getItems().add(configuration.getTitle());
+        Executor.configurations.add(configuration);
+        configuration.setOutput(info.get("output"));
     }
     public void submitProject() throws SQLException {
         String title = projectTitle.getText();
