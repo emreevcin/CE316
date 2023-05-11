@@ -157,7 +157,7 @@ public class Database {
                 "FROM configurations " +
                 "WHERE configuration_id = ?";
 
-        selectSQL = conn.prepareCall(query);
+        selectSQL = conn.prepareStatement(query);
         selectSQL.setInt(1, id);
 
         ResultSet rs = selectSQL.executeQuery();
