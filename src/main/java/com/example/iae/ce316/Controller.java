@@ -23,12 +23,15 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    // TODO: After filling the areas delete the areas.
+
     // database
     Database d = Database.getInstance();
     // variables
     // TODO: Types of the ArrayLists should be converted to corresponding objects
-    ArrayList<String> cfgTitles = new ArrayList<>();
-    ArrayList<String> projectTitles = new ArrayList<>();
+    private ArrayList<Project> projectList = new ArrayList<>();
+    private ArrayList<Configuration> configurationList = new ArrayList<>();
+    private ArrayList<Submission> submissionList = new ArrayList<>();
     @FXML
     private VBox landingPage;
     @FXML
@@ -92,10 +95,22 @@ public class Controller implements Initializable {
         System.out.println("Database:"+d);
 
         try {
-            cfgTitles.addAll(d.getCfgTitles());
-            configBox.getItems().addAll(cfgTitles);
-            projectTitles.addAll(d.getProjectTitles());
-            projectBoxSubmission.getItems().addAll(projectTitles);
+            projectList.addAll(d.getAllProjects());
+            configurationList.addAll(d.getAllConfigurations());
+
+            Executor.configurations.addAll(d.getAllConfigurations());
+            Executor.projects.addAll(d.getAllProjects());
+
+
+            for (Configuration c : configurationList) {
+                configBox.getItems().add(c.getTitle());
+            }
+
+            for (Project p : projectList) {
+                projectBoxSubmission.getItems().add(p.getTitle());
+                projectBoxResults.getItems().add(p.getTitle());
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -294,9 +309,9 @@ public class Controller implements Initializable {
         // Creates com/example/iae/ce316/files/<title>.json
         JsonFileHandler.createJSONFile(configuration); // ??
         // Creates an entity in configurations table
-        d.addCfg(configuration);
+        d.addConfiguration(configuration);
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
-        cfgTitles.add(configuration.getTitle());
+        configurationList.add(configuration);
         configBox.getItems().add(configuration.getTitle());
         Executor.configurations.add(configuration);
         configuration.setOutput(info.get("output"));
@@ -307,7 +322,7 @@ public class Controller implements Initializable {
         Project p = new Project(title,config);
         d.addProject(p);
         projectBoxResults.getItems().add(p.getTitle());
-        projectTitles.add(p.getTitle());
+        projectList.add(p);
         projectBoxSubmission.getItems().add(p.getTitle());
         Executor.projects.add(p);
 

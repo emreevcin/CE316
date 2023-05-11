@@ -74,7 +74,7 @@ public class Submission {
 
     public void setCommands(){
         Configuration configuration = this.project.getConfiguration();
-        String[] commands = Configuration.makeCommand(configuration.getLang(),configuration.getLib(),configuration.getArgs());
+        String[] commands = Configuration.makeCommand(configuration.getLang(),configuration.getLib(),configuration.getArgs(), this.directory);
         this.commands = commands;
 
     }

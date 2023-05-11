@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Configuration {
     private final String title ;
-    private static String directory;
+    private String directory;
     private String output;
     private final String[] commands ;
     private final String args ;
@@ -18,7 +18,7 @@ public class Configuration {
         this.lang = lang;
         this.lib = lib;
         this.directory = directory;
-        this.commands = makeCommand(this.lang,this.lib,this.args);
+        this.commands = makeCommand(this.lang,this.lib,this.args, this.directory);
     }
 
     public String getTitle() {
@@ -57,7 +57,7 @@ public class Configuration {
         this.output = output;
     }
 
-    public static String[] makeCommand(String lang, String lib, String args) {
+    public static String[] makeCommand(String lang, String lib, String args, String directory) {
         String command1 = "";
         String command2 = "";
         String[] commands = new String[2];
