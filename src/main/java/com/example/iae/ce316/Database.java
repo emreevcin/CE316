@@ -28,7 +28,7 @@ public class Database {
                 // Configurations Table
                 stat.executeUpdate("CREATE TABLE configurations(" +
                         "configuration_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "configuration_title VARCHAR(50) UNIQUE ," +
+                        "configuration_title VARCHAR(50) NOT NULL UNIQUE," +
                         "programming_language VARCHAR(10)," +
                         "lecturer_code_path VARCHAR(100)," +
                         "lib VARCHAR(100)," +
@@ -37,13 +37,14 @@ public class Database {
                 // Projects Table
                 stat.executeUpdate("CREATE TABLE projects(" +
                         "project_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "project_title VARCHAR(50) UNIQUE ," +
+                        "project_title VARCHAR(50) NOT NULL UNIQUE," +
                         "created_at DATE DEFAULT CURRENT_TIMESTAMP," +
                         "configuration_id INTEGER NOT NULL," +
                         "FOREIGN KEY (configuration_id) REFERENCES configurations(configuration_id));");
                 // Submissions Table
                 stat.executeUpdate("CREATE TABLE submissions(" +
-                        "student_id VARCHAR(20) PRIMARY KEY," +
+                        "submission_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "student_id VARCHAR(20) NOT NULL UNIQUE," +
                         "status VARCHAR(10)," +
                         "error VARCHAR(100)," +
                         "student_code_path VARCHAR(100)," +
@@ -107,42 +108,53 @@ public class Database {
         return projects;
     }
 
-    // It returns a project_title from projects table
-    public ArrayList<String> getProjectTitles() throws SQLException {
-        ArrayList<String> projectTitles = new ArrayList<>();
-        String query = "SELECT project_title FROM projects";
+    public ArrayList<Submission> getAllSubmissions() throws SQLException {
+        ArrayList<Submission> submissions = new ArrayList<>();
+        String query =  "SELECT student_code_path, " +
+                        "project_id " +
+                        "FROM submissions";
 
         selectSQL = conn.prepareStatement(query);
         ResultSet rs = selectSQL.executeQuery();
+
         while (rs.next()) {
-            String projectTitle = rs.getString("project_title");
-            projectTitles.add(projectTitle);
+            String codePath = rs.getString("student_code_path");
+            int projectId = rs.getInt("project_id");
+            Project p = getProjectByID(projectId);
+
+            Submission submission = new Submission(p, codePath);
+            submissions.add(submission);
         }
+
         rs.close();
         selectSQL.close();
 
-        System.out.println(projectTitles);
-
-        return projectTitles;
+        return submissions;
     }
 
-    // It returns a configuration_title from configurations table
-    public ArrayList<String> getConfigurationTitles() throws SQLException {
-        ArrayList<String> cfgTitles = new ArrayList<>();
-        String query = "SELECT configuration_title FROM configurations";
+    private Project getProjectByID(int id) throws SQLException {
+        Project project = null;
+        String query =  "SELECT project_title, " +
+                        "configuration_id " +
+                        "FROM projects " +
+                        "WHERE project_id = ?";
 
         selectSQL = conn.prepareStatement(query);
+        selectSQL.setInt(1, id);
+
         ResultSet rs = selectSQL.executeQuery();
-        while (rs.next()) {
-            String cfgTitle = rs.getString("configuration_title");
-            cfgTitles.add(cfgTitle);
+
+        if (rs.next()) {
+            String title = rs.getString("project_title");
+            int configurationID = rs.getInt("configuration_id");
+            Configuration c = getConfigurationByID(configurationID);
+            project = new Project(title, c);
         }
+
         rs.close();
         selectSQL.close();
 
-        System.out.println(cfgTitles);
-
-        return cfgTitles;
+        return project;
     }
 
     private Configuration getConfigurationByID(int id) throws SQLException {
@@ -235,6 +247,9 @@ public class Database {
 
             System.out.println("Configuration entity added successfully!");
 
+        }
+
+        public void addSubmission() throws SQLException {
         }
 
         private static Database instance = null;

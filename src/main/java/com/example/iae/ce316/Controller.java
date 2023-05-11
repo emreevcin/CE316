@@ -97,6 +97,7 @@ public class Controller implements Initializable {
         try {
             projectList.addAll(d.getAllProjects());
             configurationList.addAll(d.getAllConfigurations());
+            submissionList.addAll(d.getAllSubmissions());
 
             Executor.configurations.addAll(d.getAllConfigurations());
             Executor.projects.addAll(d.getAllProjects());
@@ -235,6 +236,7 @@ public class Controller implements Initializable {
         String directory = "src/main/submissions/"+fileName.substring(0,fileName.lastIndexOf("."));
 
         Submission s = new Submission(p, directory);
+        submissionList.add(s);
         s.setCommands();
         HashMap<String,String> info = Executor.executeSubmission(s);
         if(info.get("output") != null){
