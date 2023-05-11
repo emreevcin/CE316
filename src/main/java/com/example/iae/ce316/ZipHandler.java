@@ -39,9 +39,4 @@ public class ZipHandler {
         zis.closeEntry();
         zis.close();
     }
-
-    public static void main(String[] args) throws IOException {
-        unzip(new File("C:\\Users\\Meren\\Desktop\\myzip.zip"),0);
-    }
-
 }

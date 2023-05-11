@@ -14,7 +14,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,9 +77,12 @@ public class Controller implements Initializable {
     private VBox configPageAdd ;
     @FXML
     private VBox configList ;
+    @FXML
+    private Label configLabel;
+    private boolean isConfigPageList = false;
 
-    private HashMap<String, String> configFileMap = new HashMap<>();
-    private HashMap<String, String> subFileMap = new HashMap<>();
+    private HashMap<String, String> configFileMap = new HashMap<>(); // can be changeable due to it will hold just one path of one file -> String configAbsPath
+    private HashMap<String, String> subFileMap = new HashMap<>();// can be changeable due to it will hold just one path of one file -> String subAbsPath
 
 
 
@@ -335,31 +337,48 @@ public class Controller implements Initializable {
         configOutput.setText(p.getConfiguration().getOutput());
 
     }
-    public void openConfigurationListPage(){
-        configPageList.setVisible(true);
-        configPageAdd.setVisible(false);
+    public void configPageButtonHandler(){
+        // TODO: I will change this creation of HBox location to the configuration submitting method - EMRE Ö. , margin will needed in container VBox configList also position of buttons will be changed
+        if(configPageAdd.isVisible()){// if list is not visible , make it visible
+            configPageList.setVisible(true);
+            configPageAdd.setVisible(false);
+            configLabel.setText("Add Configuration");
+            System.out.println(Executor.configurations);
+            System.out.println(Executor.configurations.size());
+            for (int i = 0; i < Executor.configurations.size(); i++) {
+                System.out.println(Executor.configurations.get(i).getTitle());
+                HBox hBox = new HBox();
+                hBox.setSpacing(10);
+                hBox.setAlignment(Pos.CENTER_LEFT);
+                hBox.setPadding(new Insets(10, 10, 10, 10));
+                hBox.setStyle("-fx-background-color: #2C2C2C; -fx-background-radius: 10px;");
+                Label title = new Label(Executor.configurations.get(i).getTitle());
+                title.setPrefWidth(200);
+                title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-font-family: \"Segoe UI\";");
+                ImageView delete = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/delete.png"))));
+                ImageView edit = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/edit.png"))));
+                delete.setFitHeight(20);
+                delete.setFitWidth(20);
+                edit.setFitHeight(24);
+                edit.setFitWidth(24);
+                hBox.getChildren().addAll(title, delete, edit);
+                configList.getChildren().add(hBox);
+            }
 
-        for (int i = 0; i < Executor.configurations.size(); i++) {
-            HBox hBox = new HBox();
-            hBox.setSpacing(10);
-            hBox.setAlignment(Pos.CENTER_LEFT);
-            hBox.setPadding(new Insets(10, 10, 10, 10));
-            Label title = new Label(Executor.configurations.get(i).getTitle());
-            title.setPrefWidth(200);
-            ImageView delete = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/delete.png")))); // path wrong I will change it : Emre Ö.
-            ImageView edit = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/edit.png"))));
-            delete.setFitHeight(20);
-            delete.setFitWidth(20);
-            edit.setFitHeight(20);
-            edit.setFitWidth(20);
-            hBox.getChildren().addAll(title, delete, edit);
         }
-
-
+        else if(configPageList.isVisible()){
+            configPageList.setVisible(false);
+            configPageAdd.setVisible(true);
+            configLabel.setText("Configurations");
+        }
     }
-    public void openConfigurationAddPage(){
-        configPageList.setVisible(false);
-        configPageAdd.setVisible(true);
+
+    public void editConfiguration(){
+        // TODO : edit configuration
+    }
+
+    public void removeConfiguration(){
+        // TODO : remove configuration
     }
 
 }
