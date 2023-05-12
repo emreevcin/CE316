@@ -84,7 +84,6 @@ public class Controller implements Initializable {
     private VBox configList ;
     @FXML
     private Label configLabel;
-    private boolean isConfigPageList = false;
 
     private HashMap<String, String> configFileMap = new HashMap<>(); // can be changeable due to it will hold just one path of one file -> String configAbsPath
     private HashMap<String, String> subFileMap = new HashMap<>();// can be changeable due to it will hold just one path of one file -> String subAbsPath
@@ -101,8 +100,7 @@ public class Controller implements Initializable {
             configurationList.addAll(d.getAllConfigurations());
             submissionList.addAll(d.getAllSubmissions());
 
-            Executor.configurations.addAll(d.getAllConfigurations());
-            Executor.projects.addAll(d.getAllProjects());
+            System.out.println(submissionList.size());
 
 
             for (Configuration c : configurationList) {
@@ -224,7 +222,7 @@ public class Controller implements Initializable {
 
     }
 
-    public void submitSubmission() throws IOException {
+    public void submitSubmission() throws IOException, SQLException {
         String projectTitle = projectBoxSubmission.getValue();
         Project p = findProject(projectTitle);
         if(p == null){
@@ -260,6 +258,7 @@ public class Controller implements Initializable {
                     Image okImage = new Image(imageUrl);
                     s.setStatus("OK");
                     s.setStatusImage(new ImageView(okImage));
+                    s.setError("No Error");
                 } else {
                     System.out.println("Error: Failed to load image file: " + imageUrl);
                 }
@@ -269,6 +268,12 @@ public class Controller implements Initializable {
                     Image deniedImage = new Image(deniedURL);
                     s.setStatus("Error");
                     s.setStatusImage(new ImageView(deniedImage));
+                    if(!s.getOutput().equals("")){
+                        s.setError("No Output Match");
+                    }
+                    else {
+                        s.setError("Compiling/Interpreting Error");
+                    }
                 } else {
                     System.out.println("Error: Failed to load image file: " + deniedURL);
                 }
@@ -277,6 +282,8 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
 
+        d.addSubmission(s);
+        submissionList.add(s);
         p.getSubmissions().add(s);
         fileListSubmission.getItems().clear();
     }
@@ -321,12 +328,12 @@ public class Controller implements Initializable {
         // Creates com/example/iae/ce316/files/<title>.json
         JsonFileHandler.createJSONFile(configuration); // ??
         // Creates an entity in configurations table
-        d.addConfiguration(configuration);
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
         configurationList.add(configuration);
         configBox.getItems().add(configuration.getTitle());
-        Executor.configurations.add(configuration);
+
         configuration.setOutput(info.get("output"));
+        d.addConfiguration(configuration);
     }
     public void submitProject() throws SQLException {
         String title = projectTitle.getText();
@@ -336,12 +343,10 @@ public class Controller implements Initializable {
         projectBoxResults.getItems().add(p.getTitle());
         projectList.add(p);
         projectBoxSubmission.getItems().add(p.getTitle());
-        Executor.projects.add(p);
-
 
     }
     private Configuration findConfiguration(String title){
-        for(Configuration c : Executor.configurations){
+        for(Configuration c : configurationList){
             if(c.getTitle().equals(title)){
                 return c;
             }
@@ -349,7 +354,7 @@ public class Controller implements Initializable {
         return null;
     }
     private Project findProject(String title){
-        for(Project p : Executor.projects){
+        for(Project p : projectList){
             if(p.getTitle().equals(title)){
                 return p;
             }
@@ -370,16 +375,15 @@ public class Controller implements Initializable {
             configPageList.setVisible(true);
             configPageAdd.setVisible(false);
             configLabel.setText("Add Configuration");
-            System.out.println(Executor.configurations);
-            System.out.println(Executor.configurations.size());
-            for (int i = 0; i < Executor.configurations.size(); i++) {
-                System.out.println(Executor.configurations.get(i).getTitle());
+
+            for (int i = 0; i < configurationList.size(); i++) {
+                System.out.println(configurationList.get(i).getTitle());
                 HBox hBox = new HBox();
                 hBox.setSpacing(10);
                 hBox.setAlignment(Pos.CENTER_LEFT);
                 hBox.setPadding(new Insets(10, 10, 10, 10));
                 hBox.setStyle("-fx-background-color: #2C2C2C; -fx-background-radius: 10px;");
-                Label title = new Label(Executor.configurations.get(i).getTitle());
+                Label title = new Label(configurationList.get(i).getTitle());
                 title.setPrefWidth(200);
                 title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-font-family: \"Segoe UI\";");
                 ImageView delete = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/delete.png"))));

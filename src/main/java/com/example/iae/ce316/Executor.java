@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Executor {
-    public static ArrayList<Configuration> configurations = new ArrayList<>();
-    public static ArrayList<Project> projects = new ArrayList<>();
+
 
     private Executor() {}
 

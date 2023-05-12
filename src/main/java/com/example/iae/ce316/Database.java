@@ -81,6 +81,7 @@ public class Database {
             String args = rs.getString("args");
             String output = rs.getString("configuration_output");
             Configuration configuration = new Configuration(title, language, lib, args, codePath);
+            configuration.setOutput(output);
             configurations.add(configuration);
         }
 

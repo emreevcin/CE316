@@ -1,8 +1,7 @@
 package com.example.iae.ce316;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
 
 public class Submission {
     private String studentID;
