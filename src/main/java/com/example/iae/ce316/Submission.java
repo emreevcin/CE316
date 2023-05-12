@@ -20,6 +20,33 @@ public class Submission {
         this.project = project;
     }
 
+    public Submission(Project project, String studentID, String status, String error,String output) {
+        this.studentID = studentID;
+        this.status = status;
+        this.error = error;
+        this.project = project;
+        this.output = output;
+        if(status.equals("OK")){
+            String imageUrl = getClass().getResource("/icons/ok.png").toExternalForm();
+            if (imageUrl != null) {
+                Image okImage = new Image(imageUrl);
+                this.setStatusImage(new ImageView(okImage));
+            } else {
+                System.out.println("Error: Failed to load image file: " + imageUrl);
+            }
+        }else{
+            String deniedURL = getClass().getResource("/icons/denied.png").toExternalForm();
+            if (deniedURL != null) {
+                Image deniedImage = new Image(deniedURL);
+                this.setStatusImage(new ImageView(deniedImage));
+            } else {
+                System.out.println("Error: Failed to load image file: " + deniedURL);
+            }
+        }
+
+
+    }
+
     public String getStudentID() {
         return studentID;
     }

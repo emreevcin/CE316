@@ -24,11 +24,13 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     // TODO: After filling the areas delete the areas.
-
-    // database
+    // TODO: change gui to normal form
+    // TODO: EDIT & DELETE
+    // TODO: EDIT & DELETE DATABASE (Evcin)
+    // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
+     // database
     Database d = Database.getInstance();
     // variables
-    // TODO: Types of the ArrayLists should be converted to corresponding objects
     private ArrayList<Project> projectList = new ArrayList<>();
     private ArrayList<Configuration> configurationList = new ArrayList<>();
     private ArrayList<Submission> submissionList = new ArrayList<>();
@@ -107,9 +109,18 @@ public class Controller implements Initializable {
                 configBox.getItems().add(c.getTitle());
             }
 
+            for (Submission s: submissionList) {
+                for (Project p : projectList) {
+                    if (s.getProject().getTitle().equals(p.getTitle())) {
+                        p.getSubmissions().add(s);
+                    }
+                }
+            }
+
             for (Project p : projectList) {
                 projectBoxSubmission.getItems().add(p.getTitle());
                 projectBoxResults.getItems().add(p.getTitle());
+                // p.getSubmissions().addAll(submissionList);
             }
 
         } catch (SQLException e) {
@@ -236,7 +247,6 @@ public class Controller implements Initializable {
         String directory = "src/main/submissions/"+fileName.substring(0,fileName.lastIndexOf("."));
 
         Submission s = new Submission(p, directory);
-        submissionList.add(s);
         s.setCommands();
         HashMap<String,String> info = Executor.executeSubmission(s);
         if(info.get("output") != null){
