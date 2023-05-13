@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -65,7 +66,7 @@
          </children></VBox>
       <StackPane prefHeight="800.0" prefWidth="256.0" HBox.hgrow="ALWAYS">
          <children>
-            <VBox fx:id="landingPage" prefHeight="200.0" prefWidth="100.0" visible="false">
+            <VBox fx:id="landingPage" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <VBox maxHeight="200.0" prefHeight="150.0">
                      <children>
@@ -288,7 +289,7 @@
                      </padding>
                   </VBox>
                </children></VBox>
-            <VBox fx:id="configurationPage" prefHeight="200.0" prefWidth="100.0" stylesheets="@../../../../css/button.css">
+            <VBox fx:id="configurationPage" prefHeight="200.0" prefWidth="100.0" stylesheets="@../../../../css/button.css" visible="false">
                <children>
                   <HBox prefHeight="120.0">
                      <children>
@@ -326,7 +327,7 @@
                   </HBox>
                   <StackPane VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="configPageAdd" visible="false">
+                        <VBox fx:id="configPageAdd">
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox" stylesheets="@../../../../css/container.css" VBox.vgrow="ALWAYS">
                                  <children>
@@ -388,6 +389,18 @@
                                                             <Font size="18.0" />
                                                          </font>
                                                       </Label>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <padding>
+                                                      <Insets right="300.0" />
+                                                   </padding>
+                                                   <children>
+                                                      <TextField fx:id="configFile" prefHeight="48.0" prefWidth="400.0" style="-fx-background-radius: 50;">
+                                                         <padding>
+                                                            <Insets left="12.0" />
+                                                         </padding>
+                                                      </TextField>
                                                       <ImageView fitHeight="32.0" fitWidth="48.0" onMouseClicked="#addFileConfiguration" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@../../../../icons/AddIcon.png" />
@@ -397,14 +410,6 @@
                                                          </HBox.margin>
                                                       </ImageView>
                                                    </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_LEFT">
-                                                   <children>
-                                                      <ListView fx:id="fileListConfiguration" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                                   </children>
-                                                   <padding>
-                                                      <Insets right="300.0" />
-                                                   </padding>
                                                 </HBox>
                                              </children>
                                              <VBox.margin>
@@ -472,20 +477,133 @@
                               <Insets bottom="20.0" left="40.0" right="100.0" />
                            </padding>
                         </VBox>
-                        <VBox fx:id="configPageList" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <VBox fx:id="configPageList" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
                            <children>
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="vbox" stylesheets="@../../../../css/container.css" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <VBox fx:id="configList" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                                 </children>
                                  <padding>
                                     <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                                  </padding>
+                                 <children>
+                                    <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../../css/scrollPane.css" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <VBox fx:id="configList" prefHeight="599.0" prefWidth="852.0" spacing="10.0" styleClass="configList" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
                               </VBox>
                            </children>
                            <padding>
                               <Insets bottom="20.0" left="40.0" right="100.0" />
                            </padding>
+                        </VBox>
+                        <VBox fx:id="editModal" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
+                           <children>
+                              <VBox maxHeight="600.0" maxWidth="400.0" style="-fx-border-color: #FFFFFF; -fx-border-radius: 10;" styleClass="vbox" stylesheets="@../../../../css/container.css" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER_RIGHT" maxHeight="48.0">
+                                       <children>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#closeEditConfiguration" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/close.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <VBox VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label text="Title" textFill="WHITE">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="editConfigTitle" maxWidth="300.0" prefHeight="48.0" prefWidth="400.0" style="-fx-background-radius: 50;">
+                                             <padding>
+                                                <Insets left="12.0" />
+                                             </padding>
+                                             <VBox.margin>
+                                                <Insets bottom="12.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <Label text="File" textFill="WHITE">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox alignment="CENTER_LEFT">
+                                             <children>
+                                                <TextField fx:id="editConfigFile" maxWidth="300.0" prefHeight="48.0" prefWidth="300.0" style="-fx-background-radius: 50;">
+                                                   <padding>
+                                                      <Insets left="12.0" />
+                                                   </padding>
+                                                </TextField>
+                                                <ImageView fitHeight="32.0" fitWidth="48.0" onMouseClicked="#selectEditFileConfiguration" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../icons/AddIcon.png" />
+                                                   </image>
+                                                   <HBox.margin>
+                                                      <Insets left="8.0" />
+                                                   </HBox.margin>
+                                                </ImageView>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="12.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <Label text="Language" textFill="WHITE">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <ChoiceBox fx:id="editConfigLang" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50;">
+                                             <VBox.margin>
+                                                <Insets bottom="12.0" />
+                                             </VBox.margin>
+                                          </ChoiceBox>
+                                          <Label text="Command" textFill="WHITE">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="editConfigLib" maxWidth="300.0" prefHeight="48.0" prefWidth="300.0" style="-fx-background-radius: 50;">
+                                             <padding>
+                                                <Insets left="12.0" />
+                                             </padding>
+                                             <VBox.margin>
+                                                <Insets bottom="12.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <TextField fx:id="editConfigArgs" maxWidth="300.0" prefHeight="48.0" prefWidth="400.0" style="-fx-background-radius: 50;">
+                                             <padding>
+                                                <Insets left="12.0" />
+                                             </padding>
+                                             <VBox.margin>
+                                                <Insets bottom="12.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </VBox>
+                                    <HBox alignment="CENTER_RIGHT" maxHeight="48.0">
+                                       <children>
+                                          <VBox alignment="CENTER" maxHeight="80.0" maxWidth="120.0" onMouseClicked="#submitConfigurationEdit" prefHeight="100.0" prefWidth="120.0" styleClass="button" stylesheets="@../../../../css/button.css">
+                                             <children>
+                                                <Label text="Submit" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="12.0" left="18.0" right="12.0" top="16.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
                         </VBox>
                      </children>
                   </StackPane>

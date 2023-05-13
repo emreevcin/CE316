@@ -6,9 +6,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -23,9 +26,6 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    // TODO: After filling the areas delete the areas.
-    // TODO: change gui to normal form
-    // TODO: EDIT & DELETE
     // TODO: EDIT & DELETE DATABASE (Evcin)
     // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
      // database
@@ -55,8 +55,6 @@ public class Controller implements Initializable {
     @FXML
     private ListView<String> fileListSubmission;
     @FXML
-    private ListView<String> fileListConfiguration;
-    @FXML
     private TableView<Submission> resultTable;
     @FXML
     private TableColumn<Submission, ImageView> statusCol;
@@ -66,6 +64,8 @@ public class Controller implements Initializable {
     private TableColumn<Submission, String> errorCol;
     @FXML
     private TextField configTitle;
+    @FXML
+    private TextField configFile;
     @FXML
     private TextField configCommandLib;
     @FXML
@@ -84,7 +84,22 @@ public class Controller implements Initializable {
     private VBox configList ;
     @FXML
     private Label configLabel;
+    @FXML
+    private VBox editModal ;
+    @FXML
+    private TextField editConfigTitle;
+    @FXML
+    private TextField editConfigFile;
+    @FXML
+    private TextField editConfigLib;
+    @FXML
+    private TextField editConfigArgs;
+    @FXML
+    private ChoiceBox<String> editConfigLang;
 
+    private Configuration editConfig;
+    private HBox editBox;
+    private Label editLabel;
     private HashMap<String, String> configFileMap = new HashMap<>(); // can be changeable due to it will hold just one path of one file -> String configAbsPath
     private HashMap<String, String> subFileMap = new HashMap<>();// can be changeable due to it will hold just one path of one file -> String subAbsPath
 
@@ -99,9 +114,6 @@ public class Controller implements Initializable {
             projectList.addAll(d.getAllProjects());
             configurationList.addAll(d.getAllConfigurations());
             submissionList.addAll(d.getAllSubmissions());
-
-            System.out.println(submissionList.size());
-
 
             for (Configuration c : configurationList) {
                 configBox.getItems().add(c.getTitle());
@@ -191,10 +203,11 @@ public class Controller implements Initializable {
         }
     }
     public void addFileConfiguration() throws IOException {
+        configFileMap.clear();
         String[] fileDetails = addFile();
         //fileDetails[0] = file name , fileDetails[1] = file path
         if(fileDetails != null){
-            fileListConfiguration.getItems().add(fileDetails[0]);
+            configFile.setText(fileDetails[0]);
             configFileMap.put(fileDetails[0],fileDetails[1]);
         }
     }
@@ -226,7 +239,6 @@ public class Controller implements Initializable {
         String projectTitle = projectBoxSubmission.getValue();
         Project p = findProject(projectTitle);
         if(p == null){
-            System.out.println("Project not found");
             return;
         }
         if(fileListSubmission.getItems().isEmpty()){
@@ -259,8 +271,6 @@ public class Controller implements Initializable {
                     s.setStatus("OK");
                     s.setStatusImage(new ImageView(okImage));
                     s.setError("No Error");
-                } else {
-                    System.out.println("Error: Failed to load image file: " + imageUrl);
                 }
             } else {
                 String deniedURL = getClass().getResource("/icons/denied.png").toExternalForm();
@@ -274,8 +284,6 @@ public class Controller implements Initializable {
                     else {
                         s.setError("Compiling/Interpreting Error");
                     }
-                } else {
-                    System.out.println("Error: Failed to load image file: " + deniedURL);
                 }
             }
         } catch (Exception e) {
@@ -286,6 +294,9 @@ public class Controller implements Initializable {
         submissionList.add(s);
         p.getSubmissions().add(s);
         fileListSubmission.getItems().clear();
+        if(projectBoxResults.getValue().equals(projectTitle)){
+            resultTable.getItems().add(s);
+        }
     }
     public void submitConfiguration() throws SQLException, IOException {
         String title = configTitle.getText();
@@ -307,7 +318,7 @@ public class Controller implements Initializable {
             alert.showAndWait();
             return;
         }
-        if(fileListConfiguration.getItems().isEmpty()){
+        if(configFile.getText().equals("")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No files selected");
@@ -315,7 +326,7 @@ public class Controller implements Initializable {
             alert.showAndWait();
             return;
         }
-        String fileName = fileListConfiguration.getItems().get(0);
+        String fileName = configFile.getText();
         String filePath = configFileMap.get(fileName);
 
         ZipHandler.unzip(new File(filePath),0);
@@ -370,29 +381,73 @@ public class Controller implements Initializable {
 
     }
     public void configPageButtonHandler(){
-        // TODO: I will change this creation of HBox location to the configuration submitting method - EMRE Ö. , margin will needed in container VBox configList also position of buttons will be changed
         if(configPageAdd.isVisible()){// if list is not visible , make it visible
             configPageList.setVisible(true);
             configPageAdd.setVisible(false);
+            editModal.setVisible(false);
             configLabel.setText("Add Configuration");
 
+            configList.getChildren().clear();
+
             for (int i = 0; i < configurationList.size(); i++) {
-                System.out.println(configurationList.get(i).getTitle());
                 HBox hBox = new HBox();
+                HBox buttons = new HBox();
+                HBox.setHgrow(buttons, Priority.ALWAYS);
+                hBox.setMaxHeight(30);
                 hBox.setSpacing(10);
                 hBox.setAlignment(Pos.CENTER_LEFT);
+                hBox.maxWidth(configList.getWidth());
                 hBox.setPadding(new Insets(10, 10, 10, 10));
-                hBox.setStyle("-fx-background-color: #2C2C2C; -fx-background-radius: 10px;");
+                HBox.setMargin(hBox, new Insets(0, 0, 20, 0));
+                hBox.setStyle("-fx-background-color: #DCDCDC; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #FFFFFF; -fx-border-width: 2px;");
                 Label title = new Label(configurationList.get(i).getTitle());
-                title.setPrefWidth(200);
-                title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-font-family: \"Segoe UI\";");
+                title.setPrefWidth(400);
+                title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3E54AC; -fx-font-family: \"Segoe UI\";");
                 ImageView delete = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/delete.png"))));
                 ImageView edit = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/edit.png"))));
                 delete.setFitHeight(20);
                 delete.setFitWidth(20);
-                edit.setFitHeight(24);
-                edit.setFitWidth(24);
-                hBox.getChildren().addAll(title, delete, edit);
+                edit.setFitHeight(20);
+                edit.setFitWidth(20);
+                Button deleteButton = new Button();
+                Button editButton = new Button();
+                deleteButton.setGraphic(delete);
+                editButton.setGraphic(edit);
+                deleteButton.setStyle("-fx-background-color: transparent;");
+                editButton.setStyle("-fx-background-color: transparent;");
+
+                buttons.getChildren().addAll(deleteButton, editButton);
+                buttons.setAlignment(Pos.CENTER_RIGHT);
+                buttons.setSpacing(10);
+                buttons.maxHeight(30);
+
+                deleteButton.setPrefWidth(30);
+                editButton.setPrefWidth(30);
+                deleteButton.setPrefHeight(30);
+                editButton.setPrefHeight(30);
+                deleteButton.setOnAction(e -> {
+                    Configuration c = findConfiguration(title.getText());
+                    if(c == null){
+                        return;
+                    }
+                    configList.getChildren().remove(hBox);
+                    configurationList.remove(c);
+                    configBox.getItems().remove(c.getTitle());
+                    // TODO : delete configuration from database
+
+                });
+                editButton.setOnAction(e -> {
+                    Configuration config = findConfiguration(title.getText());
+                    if(config == null){
+                        return;
+                    }
+                    editConfig = config;
+                    editLabel = title;
+                    editBox = hBox;
+                    openEditConfiguration(config);
+                });
+
+                hBox.getChildren().addAll(title, buttons);
                 configList.getChildren().add(hBox);
             }
 
@@ -400,16 +455,83 @@ public class Controller implements Initializable {
         else if(configPageList.isVisible()){
             configPageList.setVisible(false);
             configPageAdd.setVisible(true);
+            editModal.setVisible(false);
             configLabel.setText("Configurations");
         }
     }
 
-    public void editConfiguration(){
-        // TODO : edit configuration
+    public void openEditConfiguration(Configuration config){
+        configFileMap.clear();
+        editModal.setVisible(true);
+        configPageList.setDisable(true);
+        configPageList.setEffect(new BoxBlur(3,3,3));
+        editConfigTitle.setText(config.getTitle());
+        editConfigLang.setValue(config.getLang());
+        editConfigLib.setText(config.getLib());
+        editConfigArgs.setText(config.getArgs());
+        String zipName = config.getDirectory().substring(config.getDirectory().lastIndexOf("/")+1);
+        editConfigFile.setText(zipName+".zip");
+    }
+    public void submitConfigurationEdit() throws IOException {
+        String title = editConfigTitle.getText();
+        String lang = editConfigLang.getValue();
+        String lib = editConfigLib.getText();
+        String args = editConfigArgs.getText();
+        Configuration configuration = editConfig;
+        if(configuration == null){
+            return;
+        }
+        configuration.setTitle(title);
+        configuration.setLang(lang);
+        configuration.setLib(lib);
+        configuration.setArgs(args);
+        String fileName = configFile.getText();
+        String filePath = configFileMap.get(fileName);
+        String directory;
+        if(filePath == null){
+            directory = configuration.getDirectory();
+        }
+        else {
+            directory = "src/main/configurations/"+fileName.substring(0,fileName.lastIndexOf("."));
+            configuration.setDirectory(directory);
+            ZipHandler.unzip(new File(filePath),0);
+        }
+        // if there is a directory with the same name, delete it and create a new one
+        File file = new File(directory);
+        if(file.exists()){
+            file.delete();
+        }
+        file.mkdir();
+
+        configuration.setCommands(Configuration.makeCommand(lang,lib,args,configuration.getDirectory()));
+
+
+        JsonFileHandler.createJSONFile(configuration); // ??
+        // Creates an entity in configurations table
+        HashMap<String,String> info = Executor.executeConfiguration(configuration);
+
+        configuration.setOutput(info.get("output"));
+
+        // TODO : update configuration in database
+
+
+        editLabel.setText(title);
+        closeEditConfiguration();
+    }
+    public void closeEditConfiguration(){
+        editModal.setVisible(false);
+        configPageList.setEffect(null);
+        configPageList.setDisable(false);
+    }
+    public void selectEditFileConfiguration(){
+        String[] fileDetails = addFile();
+        if(fileDetails == null){
+            return;
+        }
+        editConfigFile.setText(fileDetails[0]);
+        configFileMap.put(fileDetails[0],fileDetails[1]);
     }
 
-    public void removeConfiguration(){
-        // TODO : remove configuration
-    }
+
 
 }

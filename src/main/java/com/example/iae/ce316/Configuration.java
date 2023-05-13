@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Configuration {
-    private final String title ;
+    private String title ;
     private String directory;
     private String output;
-    private final String[] commands ;
-    private final String args ;
-    private final String lang;
-    private final String lib;
+    private String[] commands ;
+    private String args ;
+    private String lang;
+    private String lib;
 
     public Configuration(String title, String lang, String lib, String args,String directory) {
         this.title = title;
@@ -55,6 +55,26 @@ public class Configuration {
 
     public void setOutput(String output) {
         this.output = output;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCommands(String[] commands) {
+        this.commands = commands;
+    }
+
+    public void setArgs(String args) {
+        this.args = args;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public void setLib(String lib) {
+        this.lib = lib;
     }
 
     public static String[] makeCommand(String lang, String lib, String args, String directory) {
@@ -109,8 +129,6 @@ public class Configuration {
             commands[0] = "error";
             commands[1] = "error";
         }
-        System.out.println("Command1: "+command1);
-        System.out.println("Command2: "+command2);
         return commands;
     }
 }
