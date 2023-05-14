@@ -476,12 +476,14 @@ public class Controller implements Initializable {
         String zipName = config.getDirectory().substring(config.getDirectory().lastIndexOf("/")+1);
         editConfigFile.setText(zipName+".zip");
     }
-    public void submitConfigurationEdit() throws IOException {
+    public void submitConfigurationEdit() throws IOException, SQLException {
+
         String title = editConfigTitle.getText();
         String lang = editConfigLang.getValue();
         String lib = editConfigLib.getText();
         String args = editConfigArgs.getText();
         Configuration configuration = editConfig;
+        int configurationID = d.getConfigurationID(configuration);
         if(configuration == null){
             return;
         }
@@ -500,6 +502,7 @@ public class Controller implements Initializable {
             configuration.setDirectory(directory);
             ZipHandler.unzip(new File(filePath),0);
         }
+        configuration.setDirectory(directory);
         // if there is a directory with the same name, delete it and create a new one
         File file = new File(directory);
         if(file.exists()){
@@ -517,6 +520,7 @@ public class Controller implements Initializable {
         configuration.setOutput(info.get("output"));
 
         // TODO : update configuration in database
+        d.updateConfiguration(configuration, configurationID);
 
 
         editLabel.setText(title);

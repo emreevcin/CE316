@@ -205,7 +205,7 @@ public class Database {
     }
 
     // It returns a configuration_id from configurations table using configuration_title
-    private int getConfigurationID(Configuration configuration) throws SQLException {
+    public int getConfigurationID(Configuration configuration) throws SQLException {
         String query = "SELECT configuration_id " +
                 "FROM configurations " +
                 "WHERE configuration_title = ?";
@@ -298,6 +298,28 @@ public class Database {
         insertSQL.setInt(5, id);
         insertSQL.executeUpdate();
 
+        insertSQL.close();
+    }
+
+    public void updateConfiguration(Configuration config, int configurationID) throws SQLException {
+        String query = "UPDATE configurations SET configuration_title = ?, " +
+                "programming_language=?, " +
+                "lecturer_code_path=?, " +
+                "lib=?, " +
+                "args=?, " +
+                "configuration_output=? " +
+                "WHERE configuration_id=?";
+        insertSQL = conn.prepareStatement(query);
+
+        insertSQL.setString(1, config.getTitle());
+        insertSQL.setString(2, config.getLang());
+        insertSQL.setString(3, config.getDirectory());
+        insertSQL.setString(4, config.getLib());
+        insertSQL.setString(5, config.getArgs());
+        insertSQL.setString(6, config.getOutput());
+        insertSQL.setInt(7, configurationID);
+
+        insertSQL.executeUpdate();
         insertSQL.close();
     }
 
