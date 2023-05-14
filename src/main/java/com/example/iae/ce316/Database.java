@@ -301,6 +301,16 @@ public class Database {
         insertSQL.close();
     }
 
+    public void removeConfiguration(Configuration config) throws SQLException {
+        String query = "DELETE FROM configurations WHERE configuration_title = ?";
+
+        insertSQL = conn.prepareStatement(query);
+        insertSQL.setString(1, config.getTitle());
+        insertSQL.executeUpdate();
+
+        insertSQL.close();
+    }
+
 
     private static Database instance = null;
 

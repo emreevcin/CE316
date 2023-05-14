@@ -380,7 +380,7 @@ public class Controller implements Initializable {
         configOutput.setText(p.getConfiguration().getOutput());
 
     }
-    public void configPageButtonHandler(){
+    public void configPageButtonHandler() {
         if(configPageAdd.isVisible()){// if list is not visible , make it visible
             configPageList.setVisible(true);
             configPageAdd.setVisible(false);
@@ -433,7 +433,11 @@ public class Controller implements Initializable {
                     configList.getChildren().remove(hBox);
                     configurationList.remove(c);
                     configBox.getItems().remove(c.getTitle());
-                    // TODO : delete configuration from database
+                    try {
+                        d.removeConfiguration(c);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                 });
                 editButton.setOnAction(e -> {

@@ -46,7 +46,6 @@ public class JsonFileHandler {
         }
     }
 
-    // TODO: First the program terminates then corresponding json file is added into directory. Handle it.
     public static void createJSONFile(Configuration configuration) {
         try {
             String currentDir = System.getProperty("user.dir");
