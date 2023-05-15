@@ -26,7 +26,12 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    // TODO: EDIT & DELETE DATABASE (Evcin)
+    // TODO: configurations klasörünün içine her editten sonra yeni .json oluşuyor .json'ın değişmesi lazım yeni oluşmaması lazım
+    // TODO: import export yapılması lazım
+    // TODO: database'de edit yapınca  output / lang (lang değiştirilemiyor) / path database değişimi işlemiyor
+    // TODO: arayüzde edit yapınca file / lang değişmiyor program kapanmamasına rağmen
+    // TODO: GUI'de veriler girildikten sonra clear atmıyor
+    // TODO: diğer programlama dilleri ve argümantlarla hiç denemedi program denenmesi lazım bug-free olmalı
     // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
      // database
     Database d = Database.getInstance();
