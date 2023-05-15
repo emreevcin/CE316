@@ -234,6 +234,24 @@ public class Controller implements Initializable {
         return fileDetails;
 
     }
+    private void showAlert(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    private Image loadImage(String imageUrl) {
+        String imageURL = getClass().getResource(imageUrl).toExternalForm();
+
+        if (imageURL != null) {
+            return new Image(imageURL);
+        }
+
+        return null;
+    }
+
 
     public void submitSubmission() throws IOException, SQLException {
         String projectTitle = projectBoxSubmission.getValue();
