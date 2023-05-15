@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class JsonFileHandler {
@@ -49,9 +52,22 @@ public class JsonFileHandler {
     public static void createJSONFile(Configuration configuration) {
         try {
             String currentDir = System.getProperty("user.dir");
-            String filePath = currentDir + "\\" +configuration.getDirectory()+"\\"+ configuration.getTitle() + ".json";
-            System.out.println(filePath);
+            String directoryPath = currentDir + "\\" + configuration.getDirectory();
+
+            // Delete existing .json files in the directory
+            File[] files = new File(directoryPath).listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().endsWith(".json")) {
+                        file.delete();
+                    }
+                }
+            }
+
+            // Create new .json file
+            String filePath = directoryPath + "\\" + configuration.getTitle() + ".json";
             writeJsonFile(new File(filePath), configuration);
+            System.out.println("JSON file created successfully.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

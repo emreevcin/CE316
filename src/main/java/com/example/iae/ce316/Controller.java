@@ -128,9 +128,10 @@ public class Controller implements Initializable {
             }
 
             for (Project p : projectList) {
-                projectBoxSubmission.getItems().add(p.getTitle());
                 projectBoxResults.getItems().add(p.getTitle());
-                // p.getSubmissions().addAll(submissionList);
+                if(p.getConfiguration()!= null){
+                    projectBoxSubmission.getItems().add(p.getTitle());
+                }
             }
 
         } catch (SQLException e) {
@@ -148,7 +149,6 @@ public class Controller implements Initializable {
             }
         });
 
-
         // choice box initializing
         langBox.setValue("Select a language");
         langBox.getItems().addAll("C","C++","Java","Python");
@@ -164,7 +164,15 @@ public class Controller implements Initializable {
         projectPage.setVisible(false);
     }
 
-    public void switchToSubmissionPage() {
+    public void switchToSubmissionPage() throws SQLException {
+        projectBoxSubmission.getItems().clear();
+        for (Project p : projectList) {
+            Configuration c = p.getConfiguration();
+            int ID = d.getConfigurationID(c);
+            if(ID != 0){
+                projectBoxSubmission.getItems().add(p.getTitle());
+            }
+        }
         landingPage.setVisible(false);
         submissionPage.setVisible(true);
         resultsPage.setVisible(false);
@@ -456,6 +464,7 @@ public class Controller implements Initializable {
                     configList.getChildren().remove(hBox);
                     configurationList.remove(c);
                     configBox.getItems().remove(c.getTitle());
+
                     try {
                         d.removeConfiguration(c);
                     } catch (SQLException ex) {
@@ -545,6 +554,8 @@ public class Controller implements Initializable {
         d.updateConfiguration(configuration, configurationID);
         editLabel.setText(title);
         closeEditConfiguration();
+
+        resultTable.refresh();
     }
     public void closeEditConfiguration(){
         editModal.setVisible(false);

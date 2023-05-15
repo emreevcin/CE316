@@ -142,7 +142,7 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextArea fx:id="configOutput" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../../css/textArea.css">
+                                    <TextArea fx:id="configOutput" editable="false" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../../css/textArea.css">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
@@ -159,7 +159,7 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextArea fx:id="submissionOutput" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../../css/textArea.css" />
+                                    <TextArea fx:id="submissionOutput" editable="false" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../../css/textArea.css" />
                                  </children>
                                  <HBox.margin>
                                     <Insets left="24.0" />

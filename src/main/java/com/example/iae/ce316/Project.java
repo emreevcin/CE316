@@ -24,6 +24,14 @@ public class Project {
         return title;
     }
 
+    public String getConfigOutput() {
+        return configOutput;
+    }
+
+    public void setConfigOutput(String configOutput) {
+        this.configOutput = configOutput;
+    }
+
     public Configuration getConfiguration() {
         return configuration;
     }

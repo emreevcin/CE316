@@ -39,9 +39,10 @@ public class Database {
                 stat.executeUpdate("CREATE TABLE projects(" +
                         "project_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "project_title VARCHAR(50) NOT NULL," +
+                        "config_output TEXT," +
                         "created_at DATE DEFAULT CURRENT_TIMESTAMP," +
-                        "configuration_id INTEGER NOT NULL," +
-                        "FOREIGN KEY (configuration_id) REFERENCES configurations(configuration_id));");
+                        "configuration_id INTEGER," +
+                        "FOREIGN KEY (configuration_id) REFERENCES configurations(configuration_id) ON DELETE SET NULL);");
                 // Submissions Table
                 stat.executeUpdate("CREATE TABLE submissions(" +
                         "submission_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -246,6 +247,7 @@ public class Database {
         insertSQL = conn.prepareStatement(query);
         insertSQL.setString(1, project.getTitle());
         insertSQL.setInt(2, cfgID);
+        insertSQL.setString(3, project.getConfigOutput());
         insertSQL.executeUpdate();
 
         insertSQL.close();
