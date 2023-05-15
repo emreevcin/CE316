@@ -14,7 +14,8 @@ public class Submission {
     private String[] commands;
 
     public Submission(Project project,String directory) {
-        this.studentID = directory;
+        String sID = directory.substring(directory.lastIndexOf("/")+1);
+        this.studentID = sID;
         this.directory = directory;
         this.project = project;
     }

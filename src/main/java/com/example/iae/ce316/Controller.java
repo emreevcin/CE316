@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -100,7 +99,6 @@ public class Controller implements Initializable {
     private ChoiceBox<String> editConfigLang;
 
     private Configuration editConfig;
-    private HBox editBox;
     private Label editLabel;
     private HashMap<String, String> configFileMap = new HashMap<>(); // can be changeable due to it will hold just one path of one file -> String configAbsPath
     private HashMap<String, String> subFileMap = new HashMap<>();// can be changeable due to it will hold just one path of one file -> String subAbsPath
@@ -240,54 +238,57 @@ public class Controller implements Initializable {
     public void submitSubmission() throws IOException, SQLException {
         String projectTitle = projectBoxSubmission.getValue();
         Project p = findProject(projectTitle);
-        if(p == null){
+
+        if (p == null) {
             return;
         }
-        if(fileListSubmission.getItems().isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No files selected");
-            alert.setContentText("Please select files to submit");
-            alert.showAndWait();
+
+        if (fileListSubmission.getItems().isEmpty()) {
+            showAlert("Error", "No files selected", "Please select files to submit");
             return;
         }
+
         String fileName = fileListSubmission.getItems().get(0);
         String filePath = subFileMap.get(fileName);
 
-        ZipHandler.unzip(new File(filePath),1);
+        ZipHandler.unzip(new File(filePath), 1);
 
-        String directory = "src/main/submissions/"+fileName.substring(0,fileName.lastIndexOf("."));
+        String directory = "src/main/submissions/" + fileName.substring(0, fileName.lastIndexOf("."));
 
         Submission s = new Submission(p, directory);
         s.setCommands();
-        HashMap<String,String> info = Executor.executeSubmission(s);
-        if(info.get("output") != null){
+        HashMap<String, String> info = Executor.executeSubmission(s);
+
+        if (info.get("output") != null) {
             s.setOutput(info.get("output"));
         }
+
         boolean isOk = Executor.compare(s);
+
         try {
+            String imageUrl;
+            String status;
+            String error;
+
             if (isOk) {
-                String imageUrl = getClass().getResource("/icons/ok.png").toExternalForm();
-                if (imageUrl != null) {
-                    Image okImage = new Image(imageUrl);
-                    s.setStatus("OK");
-                    s.setStatusImage(new ImageView(okImage));
-                    s.setError("No Error");
-                }
+                imageUrl = "/icons/ok.png";
+                status = "OK";
+                error = "No Error";
             } else {
-                String deniedURL = getClass().getResource("/icons/denied.png").toExternalForm();
-                if (deniedURL != null) {
-                    Image deniedImage = new Image(deniedURL);
-                    s.setStatus("Error");
-                    s.setStatusImage(new ImageView(deniedImage));
-                    if(!s.getOutput().equals("")){
-                        s.setError("No Output Match");
-                    }
-                    else {
-                        s.setError("Compiling/Interpreting Error");
-                    }
+                imageUrl = "/icons/denied.png";
+                status = "Error";
+                if (!s.getOutput().equals("")) {
+                    error = "No Output Match";
+                } else {
+                    error = "Compiling/Interpreting Error";
                 }
             }
+
+            Image statusImage = loadImage(imageUrl);
+
+            s.setStatus(status);
+            s.setStatusImage(new ImageView(statusImage));
+            s.setError(error);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -296,10 +297,12 @@ public class Controller implements Initializable {
         submissionList.add(s);
         p.getSubmissions().add(s);
         fileListSubmission.getItems().clear();
-        if(projectBoxResults.getValue().equals(projectTitle)){
+
+        if (projectBoxResults.getValue() != null && projectBoxResults.getValue().equals(projectTitle)) {
             resultTable.getItems().add(s);
         }
     }
+
     public void submitConfiguration() throws SQLException, IOException {
         String title = configTitle.getText();
         String commandLib = configCommandLib.getText();
@@ -449,7 +452,6 @@ public class Controller implements Initializable {
                     }
                     editConfig = config;
                     editLabel = title;
-                    editBox = hBox;
                     openEditConfiguration(config);
                 });
 
@@ -522,10 +524,7 @@ public class Controller implements Initializable {
 
         configuration.setOutput(info.get("output"));
 
-        // TODO : update configuration in database
         d.updateConfiguration(configuration, configurationID);
-
-
         editLabel.setText(title);
         closeEditConfiguration();
     }
