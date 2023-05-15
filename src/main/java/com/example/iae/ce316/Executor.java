@@ -193,8 +193,8 @@ public class Executor {
         return executionInfo;
     }
     public static boolean compare(Submission submission){
-        Configuration configuration = submission.getProject().getConfiguration();
-        String configOutput = configuration.getOutput();
+        Project project = submission.getProject();
+        String configOutput = project.getConfigOutput();
         if(configOutput.equals(submission.getOutput())){
             return true;
         }

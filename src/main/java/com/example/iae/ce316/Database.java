@@ -94,7 +94,7 @@ public class Database {
 
     public ArrayList<Project> getAllProjects() throws SQLException {
         ArrayList<Project> projects = new ArrayList<>();
-        String query = "SELECT project_title, configuration_id FROM projects";
+        String query = "SELECT project_title, configuration_id , config_output FROM projects";
 
         selectSQL = conn.prepareStatement(query);
         ResultSet rs = selectSQL.executeQuery();
@@ -102,8 +102,9 @@ public class Database {
         while (rs.next()) {
             String title = rs.getString("project_title");
             int configurationID = rs.getInt("configuration_id");
+            String configOutput  =rs.getString("config_output");
             Configuration c = getConfigurationByID(configurationID);
-            Project p = new Project(title, c);
+            Project p = new Project(title, c, configOutput);
             projects.add(p);
         }
 
@@ -146,7 +147,8 @@ public class Database {
     private Project getProjectByID(int id) throws SQLException {
         Project project = null;
         String query = "SELECT project_title, " +
-                "configuration_id " +
+                "configuration_id, " +
+                "config_output " +
                 "FROM projects " +
                 "WHERE project_id = ?";
 
@@ -158,8 +160,9 @@ public class Database {
         if (rs.next()) {
             String title = rs.getString("project_title");
             int configurationID = rs.getInt("configuration_id");
+            String configOutput = rs.getString("config_output");
             Configuration c = getConfigurationByID(configurationID);
-            project = new Project(title, c);
+            project = new Project(title, c, configOutput);
         }
 
         rs.close();
@@ -207,6 +210,9 @@ public class Database {
 
     // It returns a configuration_id from configurations table using configuration_title
     public int getConfigurationID(Configuration configuration) throws SQLException {
+        if(configuration == null ){
+            return 0 ;
+        }
         String query = "SELECT configuration_id " +
                 "FROM configurations " +
                 "WHERE configuration_title = ?";
@@ -243,7 +249,7 @@ public class Database {
     public void addProject(Project project) throws SQLException {
         int cfgID = getConfigurationID(project.getConfiguration());
 
-        String query = "INSERT INTO projects(project_title, configuration_id) VALUES (?, ?);";
+        String query = "INSERT INTO projects(project_title, configuration_id, config_output) VALUES (?, ?, ?);";
         insertSQL = conn.prepareStatement(query);
         insertSQL.setString(1, project.getTitle());
         insertSQL.setInt(2, cfgID);

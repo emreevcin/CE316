@@ -10,14 +10,16 @@ public class Project {
     private final Configuration configuration;
     private final ArrayList<Submission> submissions ;
     private final HashMap<Submission, ImageView> statusList ;
-    private final HashMap<Submission,String> outputList;
+    private  HashMap<Submission,String> outputList;
+    private  String configOutput;
 
-    public Project(String title, Configuration configuration) {
+    public Project(String title, Configuration configuration, String configOutput) {
         this.title = title;
         this.configuration = configuration;
+        this.configOutput = configOutput ;
         this.submissions = new ArrayList<>();
         this.statusList = new HashMap<>();
-        this.outputList = new HashMap<>();
+
     }
 
     public String getTitle() {
@@ -35,7 +37,6 @@ public class Project {
     public Configuration getConfiguration() {
         return configuration;
     }
-
     public ArrayList<Submission> getSubmissions() {
         return submissions;
     }

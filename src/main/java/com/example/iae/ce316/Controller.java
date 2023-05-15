@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -24,9 +25,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-
-    // TODO: configurations klasörünün içine her editten sonra yeni .json oluşuyor .json'ın değişmesi lazım yeni oluşmaması lazım
-    // TODO: GUI'de veriler girildikten sonra clear atmıyor
+    // TODO : Help UI and navigations on controller ( REQ2)
+    // TODO: (export and import)-> configuration and (save and open) -> project ---- Last step (REQ5 & 10)
     // TODO: diğer programlama dilleri ve argümantlarla hiç denemedi program denenmesi lazım bug-free olmalı
     // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
      // database
@@ -153,6 +153,7 @@ public class Controller implements Initializable {
         langBox.setValue("Select a language");
         langBox.getItems().addAll("C","C++","Java","Python");
         projectBoxResults.setOnAction(e -> selectProject());
+        projectBoxResults.setValue("Select a project");
     }
     // methods
 
@@ -203,11 +204,13 @@ public class Controller implements Initializable {
         projectPage.setVisible(true);
     }
     public void addFileSubmission() throws IOException {
-        String[] fileDetails = addFile();
-        //fileDetails[0] = file name , fileDetails[1] = file path
-        if(fileDetails != null){
-            fileListSubmission.getItems().add(fileDetails[0]);
-            subFileMap.put(fileDetails[0],fileDetails[1]);
+        HashMap<String,String> fileMap = addFiles();
+        if(fileMap != null){
+            // add file names to list view using substring
+            for (String key : fileMap.keySet()) {
+                fileListSubmission.getItems().add(key.substring(key.lastIndexOf("\\")+1));
+                subFileMap.put(key,fileMap.get(key));
+            }
         }
     }
     public void addFileConfiguration() throws IOException {
@@ -242,6 +245,31 @@ public class Controller implements Initializable {
         return fileDetails;
 
     }
+    private HashMap<String,String> addFiles(){
+        DirectoryChooser fileChooser = new DirectoryChooser();
+        fileChooser.setTitle("Upload Files");
+        File file = fileChooser.showDialog(null);
+        if(file == null){
+            return null;
+        }
+        // check every file inside of this file is .zip  , then add these files to map
+        HashMap<String,String> fileMap = new HashMap<>();
+        File[] files = file.listFiles();
+        for(File f : files){
+            String suffix = f.getName().substring(f.getName().lastIndexOf("."));
+            if(!suffix.equals(".zip")){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("File type not supported");
+                alert.setContentText("Please select a .zip file");
+                alert.showAndWait();
+                return null;
+            }
+            fileMap.put(f.getName(),f.getAbsolutePath());
+        }
+        return fileMap;
+    }
+
     private void showAlert(String title, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -274,59 +302,63 @@ public class Controller implements Initializable {
             return;
         }
 
-        String fileName = fileListSubmission.getItems().get(0);
-        String filePath = subFileMap.get(fileName);
+        for (int i = 0; i <fileListSubmission.getItems().size() ; i++) {
+            String fileName = fileListSubmission.getItems().get(i);
+            String filePath = subFileMap.get(fileName);
+            ZipHandler.unzip(new File(filePath), 1);
 
-        ZipHandler.unzip(new File(filePath), 1);
+            String directory = "src/main/submissions/" + fileName.substring(0, fileName.lastIndexOf("."));
 
-        String directory = "src/main/submissions/" + fileName.substring(0, fileName.lastIndexOf("."));
+            Submission s = new Submission(p, directory);
+            s.setCommands();
+            HashMap<String, String> info = Executor.executeSubmission(s);
 
-        Submission s = new Submission(p, directory);
-        s.setCommands();
-        HashMap<String, String> info = Executor.executeSubmission(s);
-
-        if (info.get("output") != null) {
-            s.setOutput(info.get("output"));
-        }
-
-        boolean isOk = Executor.compare(s);
-
-        try {
-            String imageUrl;
-            String status;
-            String error;
-
-            if (isOk) {
-                imageUrl = "/icons/ok.png";
-                status = "OK";
-                error = "No Error";
-            } else {
-                imageUrl = "/icons/denied.png";
-                status = "Error";
-                if (!s.getOutput().equals("")) {
-                    error = "No Output Match";
-                } else {
-                    error = "Compiling/Interpreting Error";
-                }
+            if (info.get("output") != null) {
+                s.setOutput(info.get("output"));
             }
 
-            Image statusImage = loadImage(imageUrl);
+            boolean isOk = Executor.compare(s);
 
-            s.setStatus(status);
-            s.setStatusImage(new ImageView(statusImage));
-            s.setError(error);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                String imageUrl;
+                String status;
+                String error;
+
+                if (isOk) {
+                    imageUrl = "/icons/ok.png";
+                    status = "OK";
+                    error = "No Error";
+                } else {
+                    imageUrl = "/icons/denied.png";
+                    status = "Error";
+                    if (!s.getOutput().equals("")) {
+                        error = "No Output Match";
+                    } else {
+                        error = "Compiling/Interpreting Error";
+                    }
+                }
+
+                Image statusImage = loadImage(imageUrl);
+
+                s.setStatus(status);
+                s.setStatusImage(new ImageView(statusImage));
+                s.setError(error);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            d.addSubmission(s);
+            submissionList.add(s);
+            p.getSubmissions().add(s);
+
+            if (projectBoxResults.getValue() != null && projectBoxResults.getValue().equals(projectTitle)) {
+                resultTable.getItems().add(s);
+            }
         }
 
-        d.addSubmission(s);
-        submissionList.add(s);
-        p.getSubmissions().add(s);
         fileListSubmission.getItems().clear();
-
-        if (projectBoxResults.getValue() != null && projectBoxResults.getValue().equals(projectTitle)) {
-            resultTable.getItems().add(s);
-        }
+        subFileMap.clear();
+        projectBoxSubmission.setValue("Select a project");
     }
 
     public void submitConfiguration() throws SQLException, IOException {
@@ -376,15 +408,37 @@ public class Controller implements Initializable {
 
         configuration.setOutput(info.get("output"));
         d.addConfiguration(configuration);
+
+        configTitle.clear();
+        configCommandLib.clear();
+        configCommandArgs.clear();
+        configFile.clear();
+        langBox.setValue("Select a language");
+
+
     }
     public void submitProject() throws SQLException {
         String title = projectTitle.getText();
+        String configName = configBox.getValue();
+        if(title.equals("")){
+            showAlert("Error","No title","Please enter a project title");
+            return;
+        }
+        if(configName.equals("Select a configuration")){
+            showAlert("Error","No configuration selection","Please select a configuration");
+            return;
+        }
         Configuration config = findConfiguration(configBox.getValue());
-        Project p = new Project(title,config);
+        Project p = new Project(title,config, config.getOutput());
+        p.setConfigOutput(config.getOutput());
         d.addProject(p);
         projectBoxResults.getItems().add(p.getTitle());
         projectList.add(p);
         projectBoxSubmission.getItems().add(p.getTitle());
+
+        projectTitle.clear();
+        configBox.setValue("Select a configuration");
+
 
     }
     private Configuration findConfiguration(String title){
@@ -405,6 +459,9 @@ public class Controller implements Initializable {
     }
     private void selectProject(){
         String projectTitle = projectBoxResults.getValue();
+        if(projectTitle.equals("Select a project")){
+            return ;
+        }
         Project p = findProject(projectTitle);
         resultTable.getItems().clear();
         resultTable.getItems().addAll(p.getSubmissions());
@@ -496,6 +553,7 @@ public class Controller implements Initializable {
     }
 
     public void openEditConfiguration(Configuration config){
+        editConfigLang.getItems().clear();
         configFileMap.clear();
         editModal.setVisible(true);
         configPageList.setDisable(true);
