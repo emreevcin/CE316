@@ -28,6 +28,7 @@ public class Controller implements Initializable {
     // TODO : Help UI and navigations on controller ( REQ2)
     // TODO: (export and import)-> configuration and (save and open) -> project ---- Last step (REQ5 & 10)
     // TODO: diğer programlama dilleri ve argümantlarla hiç denemedi program denenmesi lazım bug-free olmalı
+    // TODO: REQ7/8- diğer dillerde denencek
     // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
      // database
     Database d = Database.getInstance();
@@ -366,27 +367,15 @@ public class Controller implements Initializable {
         String commandLib = configCommandLib.getText();
         String commandArgs = configCommandArgs.getText();
         if(title.equals("")){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No title");
-            alert.setContentText("Please enter a title");
-            alert.showAndWait();
+            showAlert("Error","No title","Please enter a title");
             return;
         }
         if(langBox.getValue().equals("Select a language")){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No language selected");
-            alert.setContentText("Please select a language");
-            alert.showAndWait();
+            showAlert("Error","No language selected","Please select a language");
             return;
         }
         if(configFile.getText().equals("")){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No files selected");
-            alert.setContentText("Please select files to submit");
-            alert.showAndWait();
+            showAlert("Error","No configuration file selected","Please select a configuration file");
             return;
         }
         String fileName = configFile.getText();
