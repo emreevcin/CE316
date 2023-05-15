@@ -27,9 +27,6 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     // TODO: configurations klasörünün içine her editten sonra yeni .json oluşuyor .json'ın değişmesi lazım yeni oluşmaması lazım
-    // TODO: import export yapılması lazım
-    // TODO: database'de edit yapınca  output / lang (lang değiştirilemiyor) / path database değişimi işlemiyor
-    // TODO: arayüzde edit yapınca file / lang değişmiyor program kapanmamasına rağmen
     // TODO: GUI'de veriler girildikten sonra clear atmıyor
     // TODO: diğer programlama dilleri ve argümantlarla hiç denemedi program denenmesi lazım bug-free olmalı
     // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
@@ -476,6 +473,7 @@ public class Controller implements Initializable {
         configPageList.setEffect(new BoxBlur(3,3,3));
         editConfigTitle.setText(config.getTitle());
         editConfigLang.setValue(config.getLang());
+        editConfigLang.getItems().addAll("C", "C++", "Java", "Python");
         editConfigLib.setText(config.getLib());
         editConfigArgs.setText(config.getArgs());
         String zipName = config.getDirectory().substring(config.getDirectory().lastIndexOf("/")+1);
@@ -496,7 +494,7 @@ public class Controller implements Initializable {
         configuration.setLang(lang);
         configuration.setLib(lib);
         configuration.setArgs(args);
-        String fileName = configFile.getText();
+        String fileName = editConfigFile.getText();
         String filePath = configFileMap.get(fileName);
         String directory;
         if(filePath == null){
