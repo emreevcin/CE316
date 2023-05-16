@@ -26,12 +26,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    // TODO : Help UI and navigations on controller ( REQ2)
-    // TODO: (export and import)-> configuration and (save and open) -> project ---- Last step (REQ5 & 10)
-    // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
-     // database
     Database d = Database.getInstance();
-    // variables
     private ArrayList<Project> projectList = new ArrayList<>();
     private ArrayList<Configuration> configurationList = new ArrayList<>();
     private ArrayList<Submission> submissionList = new ArrayList<>();
@@ -625,38 +620,54 @@ public class Controller implements Initializable {
         String lib = editConfigLib.getText();
         String args = editConfigArgs.getText();
         Configuration configuration = editConfig;
-        int configurationID = d.getConfigurationID(configuration);
         if(configuration == null){
             return;
         }
+        String oldTitle = configuration.getTitle();
+        int configurationID = d.getConfigurationID(configuration);
+
+        String fileName = editConfigFile.getText();
+        String filePath = configFileMap.get(fileName);
+        String directory;
+
+        boolean isTitleChanged = !oldTitle.equals(title);
+
+        File dir = new File("src/main/configurations/");
+        File[] directoryListing = dir.listFiles();
+        if(directoryListing != null){
+            for(File child : directoryListing){
+
+                if(isTitleChanged && child.getName().equals(oldTitle)){
+                    child.renameTo(new File("src/main/configurations/"+title));
+                    directory = "src/main/configurations/"+title;
+                    configuration.setDirectory(directory);
+                    break;
+                }
+
+                if(child.getName().equals(title)){
+                       showAlert("Error","Configuration with the same name already exists!","Please choose a different name.");
+                       configFileMap.remove(fileName);
+                       return;
+                }
+
+            }
+        }
+
+        if(filePath != null){
+            ZipHandler.unzip(new File(filePath),0,title);
+        }
+
         configuration.setTitle(title);
         configuration.setLang(lang);
         configuration.setLib(lib);
         configuration.setArgs(args);
-        String fileName = editConfigFile.getText();
-        String filePath = configFileMap.get(fileName);
-        String directory;
-        if(filePath == null){
-            directory = configuration.getDirectory();
-        }
-        else {
-            directory = "src/main/configurations/"+fileName.substring(0,fileName.lastIndexOf("."));
-            configuration.setDirectory(directory);
-            ZipHandler.unzip(new File(filePath),0,title);
-        }
-        configuration.setDirectory(directory);
-        // if there is a directory with the same name, delete it and create a new one
-        File file = new File(directory);
-        if(file.exists()){
-            file.delete();
-        }
-        file.mkdir();
+
+
 
         configuration.setCommands(Configuration.makeCommand(lang,lib,args,configuration.getDirectory()));
 
 
-        JsonFileHandler.createJSONFile(configuration); // ??
-        // Creates an entity in configurations table
+        JsonFileHandler.createJSONFile(configuration);
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
 
         configuration.setOutput(info.get("output"));

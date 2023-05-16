@@ -15,6 +15,7 @@ public class App extends Application {
         stage.setMinWidth(1200);
         stage.setMinHeight(800);
         stage.setTitle("Integrated Assignment Environment");
+        stage.getIcons().add(new javafx.scene.image.Image(App.class.getResourceAsStream("/icons/appIconsss.png")));
         stage.setScene(scene);
         stage.show();
     }

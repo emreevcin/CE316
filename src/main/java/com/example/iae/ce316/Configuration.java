@@ -116,7 +116,6 @@ public class Configuration {
         String filesString = sb.toString();
 
         if(lang.equals("C")){
-            // for every file in the directory with a suffix of .c, add it to the command
             String[] parts = lib.split("\\s+");
             String filename = parts[1];
             command1 ="gcc " + filesString + " " + lib;

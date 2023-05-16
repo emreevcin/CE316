@@ -71,20 +71,12 @@ public class Submission {
         this.output = output;
     }
 
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public ImageView getStatusImage() {
-        return statusImage;
     }
 
     public void setStatusImage(ImageView statusImage) {
