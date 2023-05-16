@@ -24,6 +24,7 @@ import java.util.*;
 
 public class Controller implements Initializable {
     Database d = Database.getInstance();
+    DirectoryHandler directoryHandler= DirectoryHandler.getInstance();
     private ArrayList<Project> projectList = new ArrayList<>();
     private ArrayList<Configuration> configurationList = new ArrayList<>();
     private ArrayList<Submission> submissionList = new ArrayList<>();
@@ -113,6 +114,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Database:"+d);
+        System.out.println("Directory handler:"+directoryHandler);
 
         try {
             projectList.addAll(d.getAllProjects());
@@ -309,9 +311,9 @@ public class Controller implements Initializable {
         for (int i = 0; i <fileListSubmission.getItems().size() ; i++) {
             String fileName = fileListSubmission.getItems().get(i);
             String filePath = subFileMap.get(fileName);
-            ZipHandler.unzip(new File(filePath), 1,p.getTitle()+"\\"+fileName.substring(0,fileName.lastIndexOf(".")));
+            ZipHandler.unzip(new File(filePath), 1,p.getTitle()+File.separator+fileName.substring(0,fileName.lastIndexOf(".")));
 
-            String directory = "src/main/projects/"+p.getTitle()+"/"+ fileName.substring(0, fileName.lastIndexOf("."));
+            String directory = "projects"+File.separator+p.getTitle()+File.separator+ fileName.substring(0, fileName.lastIndexOf("."));
 
             Submission s = new Submission(p, directory);
             s.setCommands();
@@ -386,14 +388,14 @@ public class Controller implements Initializable {
 
         ZipHandler.unzip(new File(filePath),0,title);
 
-        String directory = "src/main/configurations/"+title;
+        String directory = "configurations/"+title;
+
 
         Configuration configuration = new Configuration(title,langBox.getValue(),commandLib,commandArgs,directory);
 
 
-        // Creates com/example/iae/ce316/files/<title>.json
-        JsonFileHandler.createJSONFile(configuration); // ??
-        // Creates an entity in configurations table
+        JsonFileHandler.createJSONFile(configuration);
+
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
         configurationList.add(configuration);
         configBox.getItems().add(configuration.getTitle());
@@ -432,7 +434,7 @@ public class Controller implements Initializable {
         projectTitle.clear();
         configBox.setValue("Select a configuration");
 
-        File file = new File("src/main/projects/");
+        File file = new File("projects"+File.separator);
         File[] files = file.listFiles();
         for(File f : files){
             if(f.getName().equals(title)){
@@ -440,7 +442,7 @@ public class Controller implements Initializable {
                 return;
             }
         }
-        file = new File("src/main/projects/"+title);
+        file = new File("projects"+File.separator+title);
         file.mkdir();
 
     }
@@ -609,8 +611,6 @@ public class Controller implements Initializable {
         editConfigLang.getItems().addAll("C", "C++", "Java", "Python");
         editConfigLib.setText(config.getLib());
         editConfigArgs.setText(config.getArgs());
-        String zipName = config.getDirectory().substring(config.getDirectory().lastIndexOf("/")+1);
-        editConfigFile.setText(zipName+".zip");
     }
     public void submitConfigurationEdit() throws IOException, SQLException {
 
@@ -631,14 +631,14 @@ public class Controller implements Initializable {
 
         boolean isTitleChanged = !oldTitle.equals(title);
 
-        File dir = new File("src/main/configurations/");
+        File dir = new File("configurations"+File.separator);
         File[] directoryListing = dir.listFiles();
         if(directoryListing != null){
             for(File child : directoryListing){
 
                 if(isTitleChanged && child.getName().equals(oldTitle)){
-                    child.renameTo(new File("src/main/configurations/"+title));
-                    directory = "src/main/configurations/"+title;
+                    child.renameTo(new File("configurations"+File.separator+title));
+                    directory = "configurations"+File.separator+title;
                     configuration.setDirectory(directory);
                     break;
                 }

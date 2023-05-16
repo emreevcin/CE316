@@ -3,6 +3,8 @@ package com.example.iae.ce316;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
+
 public class Submission {
     private String studentID;
     private String error;
@@ -14,7 +16,7 @@ public class Submission {
     private String[] commands;
 
     public Submission(Project project,String directory) {
-        String sID = directory.substring(directory.lastIndexOf("/")+1);
+        String sID = directory.substring(directory.lastIndexOf(File.separator)+1);
         this.studentID = sID;
         this.directory = directory;
         this.project = project;

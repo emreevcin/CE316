@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream;
 public class ZipHandler {
     public static void unzip(File zippedFile, int option, String dirName) throws IOException {
         // option 0 for configurations , option 1 for submissions
-        String dir = option == 0 ? "src\\main\\configurations\\" : "src\\main\\projects\\";
+        String dir = option == 0 ? "configurations"+ File.separator : "projects" + File.separator;
         byte[] buffer = new byte[2048];
         ZipInputStream zis = new ZipInputStream(new FileInputStream(zippedFile));
         ZipEntry zipEntry = zis.getNextEntry();
@@ -34,8 +34,8 @@ public class ZipHandler {
                 newFile = new File(dir + dirName);
                 newFile.mkdir();
 
-                System.out.println(newFile.getAbsolutePath() + "\\" + zipEntry.getName());
-                FileOutputStream fos = new FileOutputStream(newFile.getAbsolutePath() + "\\" + zipEntry.getName());
+                System.out.println(newFile.getAbsolutePath() + File.separator + zipEntry.getName());
+                FileOutputStream fos = new FileOutputStream(newFile.getAbsolutePath() + File.separator + zipEntry.getName());
                 int len;
                 while ((len = zis.read(buffer)) > 0) {
                     fos.write(buffer, 0, len);
