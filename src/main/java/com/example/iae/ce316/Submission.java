@@ -83,6 +83,10 @@ public class Submission {
         this.statusImage = statusImage;
     }
 
+    public ImageView getStatusImage() {
+        return statusImage;
+    }
+
     public String getDirectory() {
         return directory;
     }

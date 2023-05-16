@@ -756,7 +756,7 @@
             </VBox>
             <VBox fx:id="helpModal" alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" visible="false">
                <children>
-                  <VBox maxHeight="600.0" maxWidth="600.0" minHeight="600.0" minWidth="600.0" prefHeight="500.0" prefWidth="100.0" style="-fx-border-color: #FFFFFF; -fx-border-radius: 10;" styleClass="vbox" stylesheets="@../../../../css/container.css">
+                  <VBox maxHeight="600.0" maxWidth="600.0" minHeight="700.0" minWidth="700.0" prefHeight="600.0" prefWidth="100.0" style="-fx-border-color: #FFFFFF; -fx-border-radius: 10;" styleClass="vbox" stylesheets="@../../../../css/container.css">
                      <children>
                         <HBox alignment="CENTER_RIGHT" maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
                            <children>
@@ -774,17 +774,152 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="First" />
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fitHeight="600.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/image5.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox minWidth="100.0" prefHeight="120.0">
+                                       <children>
+                                          <Label prefHeight="109.0" prefWidth="682.0" text="* This page allows the creation or import of a new configuration with inputs. Command inputs are optional due to the programming language that configuration files wanted to be executed with. C or C++ files need a library value; Java and Python files do not use a library value. For arguments, you need to fill in args. Existing configurations can be seen with &quot;Configurations&quot; button ." textFill="WHITE" wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                    </VBox>
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
                                  <children>
-                                    <Label text="Middle" />
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fitHeight="600.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/image4.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox minWidth="100.0" prefHeight="120.0">
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                       <children>
+                                          <Label prefHeight="109.0" prefWidth="682.0" text="*This page show existing configurations. Each configuration can be editable , removable or exportable with buttons.  " textFill="WHITE" wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
                                  <children>
-                                    <Label text="Last" />
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fitHeight="600.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/image6.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox minWidth="100.0" prefHeight="120.0">
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                       <children>
+                                          <Label prefHeight="109.0" prefWidth="682.0" text="*This page will be open when edit button is clicked. This page will be edit when editted configuration submitted." textFill="WHITE" wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fitHeight="600.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/image3.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox minWidth="100.0" prefHeight="120.0">
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                       <children>
+                                          <Label prefHeight="109.0" prefWidth="682.0" text="*This page is for creating a new project. Submissions are stored inside the project files." textFill="WHITE" wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fitHeight="600.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/image2.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox minWidth="100.0" prefHeight="120.0">
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                       <children>
+                                          <Label prefHeight="109.0" prefWidth="682.0" text="*In this page selected project executes all zip files inside the selected directory. These zip files are a representation for each student. Submission files stored inside the selected project." textFill="WHITE" wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fitHeight="600.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../icons/image.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox minWidth="100.0" prefHeight="120.0">
+                                       <padding>
+                                          <Insets left="8.0" right="8.0" />
+                                       </padding>
+                                       <children>
+                                          <Label prefHeight="109.0" prefWidth="682.0" text="*This page will demonstrate a status for each submissions that stored in selected project. When a row double clicked, student output will be displayed inside the student output." textFill="WHITE" wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </VBox>
                            </children>
