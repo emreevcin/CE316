@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import javafx.stage.FileChooser;
+
 
 public class JsonFileHandler {
 
@@ -73,16 +73,73 @@ public class JsonFileHandler {
         }
     }
 
+    public static Configuration importConfigurationFromJson() {
+        // Create an instance of ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Create a file chooser dialog
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Configuration JSON File");
+
+        // Set extension filter if needed (optional)
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(jsonFilter);
+
+        // Show the file chooser dialog
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            try {
+                // Read the JSON file and map it to the Configuration object
+                Configuration configuration = objectMapper.readValue(selectedFile, Configuration.class);
+
+                System.out.println("Configuration imported from JSON successfully!");
+                return configuration;
+            } catch (IOException e) {
+                System.out.println("Error importing configuration from JSON: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Import canceled by the user.");
+        }
+
+        return null;
+    }
+
+    public static void exportConfigurationToJson(Configuration configuration) {
+        // Create an instance of ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Enable pretty printing of JSON
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // Create a file chooser dialog
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Configuration JSON File");
+        fileChooser.setInitialFileName(configuration.getTitle());
+
+        // Set extension filter if needed (optional)
+        FileChooser.ExtensionFilter jsonFilter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(jsonFilter);
+
+        // Show the file chooser dialog
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile != null) {
+            try {
+                // Write the configuration object to the selected file as JSON
+                objectMapper.writeValue(selectedFile, configuration);
+
+                System.out.println("Configuration exported to JSON successfully!");
+            } catch (IOException e) {
+                System.out.println("Error exporting configuration to JSON: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Configuration export canceled by the user.");
+        }
+    }
+
 
     public static void main(String[] args) throws IOException {
-
-         /*** Example usage for reading the JSON file into a Java object
-
-         Configuration read = readJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), Configuration.class);
-         System.out.println(read.getFiles());
-
-
-         ***/
 
 
         String directory = "src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json";
@@ -97,7 +154,7 @@ public class JsonFileHandler {
         System.out.println(configuration);
 
         // Write the Java object to a JSON file
-        writeJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), configuration);
+       // writeJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), configuration);
 
     }
 

@@ -5,6 +5,7 @@ module com.example.iae {
     requires java.sql;
     requires com.google.gson;
     requires org.xerial.sqlitejdbc;
+    requires com.fasterxml.jackson.databind;
 
 
     opens com.example.iae.ce316 to javafx.fxml ,com.google.gson;

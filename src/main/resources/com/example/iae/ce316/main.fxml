@@ -328,6 +328,11 @@
                               <Insets right="100.0" />
                            </padding>
                         </HBox>
+                        <VBox onMouseClicked="#importConfiguration" prefHeight="200.0" prefWidth="200.0" styleClass="button">
+                           <children>
+                              <Label fx:id="importLabel" text="Import" textFill="WHITE" />
+                           </children>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="40.0" top="40.0" />

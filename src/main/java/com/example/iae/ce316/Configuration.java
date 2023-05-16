@@ -1,9 +1,9 @@
 package com.example.iae.ce316;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class Configuration {
     private String title ;
@@ -14,14 +14,21 @@ public class Configuration {
     private String lang;
     private String lib;
 
-    public Configuration(String title, String lang, String lib, String args,String directory) {
+    @JsonCreator
+    public Configuration(@JsonProperty("title") String title,
+                         @JsonProperty("lang") String lang,
+                         @JsonProperty("lib") String lib,
+                         @JsonProperty("args") String args,
+                         @JsonProperty("directory") String directory) {
         this.title = title;
         this.args = args;
         this.lang = lang;
         this.lib = lib;
         this.directory = directory;
-        this.commands = makeCommand(this.lang,this.lib,this.args, this.directory);
+        this.commands = makeCommand(this.lang, this.lib, this.args, this.directory);
     }
+
+
 
     public String getTitle() {
         return title;

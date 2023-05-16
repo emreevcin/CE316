@@ -558,8 +558,8 @@ public class Controller implements Initializable {
                     if(config == null){
                         return;
                     }
-                    // TODO : make a function to export configuration
-                    //  exportConfiguration(config);
+
+                    JsonFileHandler.exportConfigurationToJson(config);
                 });
 
                 hBox.getChildren().addAll(title, buttons);
@@ -573,6 +573,16 @@ public class Controller implements Initializable {
             editModal.setVisible(false);
             configLabel.setText("Configurations");
         }
+    }
+
+    public void importConfiguration() throws SQLException {
+        Configuration config = JsonFileHandler.importConfigurationFromJson();
+        if (config == null) {
+            return;
+        }
+        d.addConfiguration(config);
+        configurationList.add(config);
+        configBox.getItems().add(config.getTitle());
     }
 
     public void openEditConfiguration(Configuration config){

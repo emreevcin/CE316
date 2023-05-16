@@ -28,7 +28,7 @@ public class Database {
                 // Configurations Table
                 stat.executeUpdate("CREATE TABLE configurations(" +
                         "configuration_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "configuration_title VARCHAR(50) NOT NULL," +
+                        "configuration_title VARCHAR(50) NOT NULL UNIQUE," +
                         "programming_language VARCHAR(10)," +
                         "lecturer_code_path VARCHAR(100)," +
                         "lib VARCHAR(100)," +
@@ -38,7 +38,7 @@ public class Database {
                 // Projects Table
                 stat.executeUpdate("CREATE TABLE projects(" +
                         "project_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "project_title VARCHAR(50) NOT NULL," +
+                        "project_title VARCHAR(50) NOT NULL UNIQUE," +
                         "config_output TEXT," +
                         "created_at DATE DEFAULT CURRENT_TIMESTAMP," +
                         "configuration_id INTEGER," +
