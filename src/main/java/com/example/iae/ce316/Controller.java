@@ -213,7 +213,7 @@ public class Controller implements Initializable {
         configurationPage.setVisible(false);
         projectPage.setVisible(true);
     }
-    public void addFileSubmission() throws IOException {
+    public void addFileSubmission() {
         HashMap<String,String> fileMap = addFiles();
         if(fileMap != null){
             // add file names to list view using substring
@@ -223,7 +223,7 @@ public class Controller implements Initializable {
             }
         }
     }
-    public void addFileConfiguration() throws IOException {
+    public void addFileConfiguration()  {
         configFileMap.clear();
         String[] fileDetails = addFile();
         //fileDetails[0] = file name , fileDetails[1] = file path
@@ -315,9 +315,9 @@ public class Controller implements Initializable {
         for (int i = 0; i <fileListSubmission.getItems().size() ; i++) {
             String fileName = fileListSubmission.getItems().get(i);
             String filePath = subFileMap.get(fileName);
-            ZipHandler.unzip(new File(filePath), 1);
+            ZipHandler.unzip(new File(filePath), 1,p.getTitle()+"\\"+fileName.substring(0,fileName.lastIndexOf(".")));
 
-            String directory = "src/main/submissions/" + fileName.substring(0, fileName.lastIndexOf("."));
+            String directory = "src/main/projects/"+p.getTitle()+"/"+ fileName.substring(0, fileName.lastIndexOf("."));
 
             Submission s = new Submission(p, directory);
             s.setCommands();
@@ -390,9 +390,9 @@ public class Controller implements Initializable {
         String fileName = configFile.getText();
         String filePath = configFileMap.get(fileName);
 
-        ZipHandler.unzip(new File(filePath),0);
+        ZipHandler.unzip(new File(filePath),0,title);
 
-        String directory = "src/main/configurations/"+fileName.substring(0,fileName.lastIndexOf("."));
+        String directory = "src/main/configurations/"+title;
 
         Configuration configuration = new Configuration(title,langBox.getValue(),commandLib,commandArgs,directory);
 
@@ -406,7 +406,6 @@ public class Controller implements Initializable {
 
         configuration.setOutput(info.get("output"));
 
-        System.out.println("....." + configuration.getOutput());
         d.addConfiguration(configuration);
 
         configTitle.clear();
@@ -430,7 +429,6 @@ public class Controller implements Initializable {
         }
         Configuration config = findConfiguration(configBox.getValue());
         Project p = new Project(title,config, config.getOutput());
-        System.out.println(config.getOutput() + ".....");
         p.setConfigOutput(config.getOutput());
         d.addProject(p);
         projectBoxResults.getItems().add(p.getTitle());
@@ -440,6 +438,16 @@ public class Controller implements Initializable {
         projectTitle.clear();
         configBox.setValue("Select a configuration");
 
+        File file = new File("src/main/projects/");
+        File[] files = file.listFiles();
+        for(File f : files){
+            if(f.getName().equals(title)){
+                showAlert("Error","Project already exists","Please enter a different title");
+                return;
+            }
+        }
+        file = new File("src/main/projects/"+title);
+        file.mkdir();
 
     }
     private Configuration findConfiguration(String title){
@@ -624,7 +632,7 @@ public class Controller implements Initializable {
         else {
             directory = "src/main/configurations/"+fileName.substring(0,fileName.lastIndexOf("."));
             configuration.setDirectory(directory);
-            ZipHandler.unzip(new File(filePath),0);
+            ZipHandler.unzip(new File(filePath),0,title);
         }
         configuration.setDirectory(directory);
         // if there is a directory with the same name, delete it and create a new one
@@ -643,7 +651,6 @@ public class Controller implements Initializable {
 
         configuration.setOutput(info.get("output"));
 
-        System.out.println("....." + configuration.getOutput());
 
         d.updateConfiguration(configuration, configurationID);
         editLabel.setText(title);

@@ -226,7 +226,6 @@ public class Database {
         rs.close();
         selectSQL.close();
 
-        System.out.println(configurationID);
 
         return configurationID;
     }
