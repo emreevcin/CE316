@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -96,7 +97,17 @@ public class Controller implements Initializable {
     private TextField editConfigArgs;
     @FXML
     private ChoiceBox<String> editConfigLang;
+    @FXML
+    private VBox helpModal;
+    @FXML
+    private StackPane helpStack;
+    @FXML
+    private ImageView backButtonHelp;
+    @FXML
+    private ImageView nextButtonHelp;
 
+
+    private int helpStackIndex = 0;
     private Configuration editConfig;
     private Label editLabel;
     private HashMap<String, String> configFileMap = new HashMap<>(); // can be changeable due to it will hold just one path of one file -> String configAbsPath
@@ -653,7 +664,66 @@ public class Controller implements Initializable {
         editConfigFile.setText(fileDetails[0]);
         configFileMap.put(fileDetails[0],fileDetails[1]);
     }
+    public void openHelpModal(){
+        helpModal.setVisible(true);
+        backButtonHelp.setVisible(false);
+        configPageList.setEffect(new BoxBlur(3,3,3));
+        configPageList.setDisable(true);
+        configPageAdd.setEffect(new BoxBlur(3,3,3));
+        configPageAdd.setDisable(true);
+        editModal.setEffect(new BoxBlur(3,3,3));
+        editModal.setDisable(true);
+        landingPage.setEffect(new BoxBlur(3,3,3));
+        landingPage.setDisable(true);
+        configurationPage.setEffect(new BoxBlur(3,3,3));
+        configurationPage.setDisable(true);
+        resultsPage.setEffect(new BoxBlur(3,3,3));
+        resultsPage.setDisable(true);
+        submissionPage.setEffect(new BoxBlur(3,3,3));
+        submissionPage.setDisable(true);
+        projectPage.setEffect(new BoxBlur(3,3,3));
+        projectPage.setDisable(true);
+    }
+    public void closeHelpModal(){
+        helpModal.setVisible(false);
+        configPageList.setEffect(null);
+        configPageList.setDisable(false);
+        configPageAdd.setEffect(null);
+        configPageAdd.setDisable(false);
+        editModal.setEffect(null);
+        editModal.setDisable(false);
+        landingPage.setEffect(null);
+        landingPage.setDisable(false);
+        configurationPage.setEffect(null);
+        configurationPage.setDisable(false);
+        resultsPage.setEffect(null);
+        resultsPage.setDisable(false);
+        submissionPage.setEffect(null);
+        submissionPage.setDisable(false);
+        projectPage.setEffect(null);
+        projectPage.setDisable(false);
+    }
+    public void navigateForwardHelp(){
+        helpStack.getChildren().get(helpStackIndex).setVisible(false);
+        helpStack.getChildren().get(helpStackIndex+1).setVisible(true);
+        helpStackIndex++;
+        if(helpStackIndex == helpStack.getChildren().size()-1){
+            nextButtonHelp.setVisible(false);
+        }
+        backButtonHelp.setVisible(true);
 
+    }
+    public void navigateBackwardHelp(){
+        helpStack.getChildren().get(helpStackIndex).setVisible(false);
+        helpStack.getChildren().get(helpStackIndex-1).setVisible(true);
+        helpStackIndex--;
+        if(helpStackIndex == 0){
+            backButtonHelp.setVisible(false);
+        }
+        nextButtonHelp.setVisible(true);
+
+
+    }
 
 
 }

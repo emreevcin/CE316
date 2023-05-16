@@ -59,7 +59,7 @@
                   <Insets />
                </VBox.margin>
             </VBox>
-            <ImageView fitHeight="48.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="48.0" fitWidth="200.0" onMouseClicked="#openHelpModal" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../icons/HelpIcon.png" />
                </image>
@@ -725,6 +725,68 @@
                      </padding>
                   </VBox>
                </children>
+            </VBox>
+            <VBox fx:id="helpModal" alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" visible="false">
+               <children>
+                  <VBox maxHeight="600.0" maxWidth="600.0" minHeight="600.0" minWidth="600.0" prefHeight="500.0" prefWidth="100.0" style="-fx-border-color: #FFFFFF; -fx-border-radius: 10;" styleClass="vbox" stylesheets="@../../../../css/container.css">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT" maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#closeHelpModal" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../icons/close.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets right="12.0" />
+                           </padding>
+                        </HBox>
+                        <StackPane fx:id="helpStack" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="First" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="Middle" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
+                                 <children>
+                                    <Label text="Last" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </StackPane>
+                        <HBox alignment="CENTER_RIGHT" maxHeight="50.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fx:id="backButtonHelp" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#navigateBackwardHelp" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../icons/left.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="nextButtonHelp" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#navigateForwardHelp" pickOnBounds="true" preserveRatio="true" smooth="false">
+                                 <HBox.margin>
+                                    <Insets left="16.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../../../icons/right-chevron.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets bottom="4.0" right="16.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="48.0" left="32.0" />
+               </padding>
             </VBox>
          </children></StackPane>
    </children>
