@@ -82,9 +82,14 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50; -fx-border-color: #DFDFDF; -fx-border-radius: 50;" VBox.vgrow="ALWAYS">
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50; -fx-border-color: #DFDFDF; -fx-border-radius: 50;" VBox.vgrow="ALWAYS">
                            <children>
-                              <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="No text has been added here yet, since the project is still in development process." translateX="200.0" translateY="150.0" wrappingWidth="782.30859375">
+                              <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Integrated Assignment Environment" textAlignment="CENTER" wrappingWidth="782.30859375">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="You can start exploring the application by travelling the navigation bar on the left..." textAlignment="CENTER" wrappingWidth="782.30859375">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
