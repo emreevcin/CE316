@@ -3,11 +3,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,13 +27,6 @@ public class JsonFileHandler {
      * @throws JsonIOException if there is an error reading the JSON file
      * @throws JsonSyntaxException if the JSON file has invalid syntax
      */
-    public static <T> T readJsonFile(File file, Class<T> clazz) throws FileNotFoundException, JsonIOException, JsonSyntaxException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            return gson.fromJson(reader, clazz);
-        } catch (IOException e) {
-            throw new JsonIOException("Error reading JSON file: " + file.getAbsolutePath(), e);
-        }
-    }
 
     /**
      * Serializes a Java object to a JSON string and writes it to a file.
@@ -52,7 +43,8 @@ public class JsonFileHandler {
     public static void createJSONFile(Configuration configuration) {
         try {
             String currentDir = System.getProperty("user.dir");
-            String directoryPath = currentDir + "\\" + configuration.getDirectory();
+            String directoryPath = currentDir + File.separator + configuration.getDirectory();
+            System.out.println(directoryPath);
 
             // Delete existing .json files in the directory
             File[] files = new File(directoryPath).listFiles();
@@ -65,7 +57,7 @@ public class JsonFileHandler {
             }
 
             // Create new .json file
-            String filePath = directoryPath + "\\" + configuration.getTitle() + ".json";
+            String filePath = directoryPath + File.separator + configuration.getTitle() + ".json";
             writeJsonFile(new File(filePath), configuration);
             System.out.println("JSON file created successfully.");
         } catch (IOException e) {
@@ -136,26 +128,6 @@ public class JsonFileHandler {
         } else {
             System.out.println("Configuration export canceled by the user.");
         }
-    }
-
-
-    public static void main(String[] args) throws IOException {
-
-
-        String directory = "src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json";
-        String title = "Config";
-        String lang = "C";
-        String output = "Hello World";
-        String lib = "";
-        String Args = "";
-        Configuration configuration = new Configuration(title,lang,lib,Args,directory);
-        configuration.setOutput(output);
-        configuration.setDirectory(directory);
-        System.out.println(configuration);
-
-        // Write the Java object to a JSON file
-       // writeJsonFile(new File("src\\main\\java\\com\\example\\iae\\ce316\\files\\config.json"), configuration);
-
     }
 
 }

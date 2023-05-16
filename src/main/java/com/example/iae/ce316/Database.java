@@ -12,7 +12,7 @@ public class Database {
     private PreparedStatement selectSQL;
 
     private Database() {
-        fileName = "./src/main/mydb.db";
+        fileName = "mydb.db";
         File file = new File(fileName);
         boolean firstRun = !file.exists();
         conn = null;
@@ -288,12 +288,12 @@ public class Database {
 
     public void addSubmission(Submission s) throws SQLException {
         String query =  "INSERT INTO submissions(" +
-                        "student_id, " +
-                        "status, " +
-                        "error, " +
-                        "submission_output, " +
-                        "project_id) " +
-                        "VALUES (?, ?, ?, ?, ?)";
+                "student_id, " +
+                "status, " +
+                "error, " +
+                "submission_output, " +
+                "project_id) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         insertSQL = conn.prepareStatement(query);
 

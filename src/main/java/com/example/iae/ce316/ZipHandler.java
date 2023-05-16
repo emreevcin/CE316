@@ -19,11 +19,17 @@ public class ZipHandler {
                 continue;
             } else {
                 File newFile = new File(dir);
-                File[] files = newFile.listFiles();
-                for (File file : files) {
-                    if (file.getName().equals(dirName)) {
-                        file.delete();
+
+                if (newFile.exists() && newFile.isDirectory()) {
+                    File[] files = newFile.listFiles();
+                    for (File file : files) {
+                        if (file.getName().equals(dirName)) {
+                            file.delete();
+                        }
                     }
+                } else {
+                    System.err.println("Directory does not exist: " + dir);
+                    // Handle the error accordingly
                 }
                 newFile = new File(dir + dirName);
                 newFile.mkdir();

@@ -79,12 +79,11 @@ public class Submission {
         this.status = status;
     }
 
-    public void setStatusImage(ImageView statusImage) {
-        this.statusImage = statusImage;
-    }
-
     public ImageView getStatusImage() {
         return statusImage;
+    }
+    public void setStatusImage(ImageView statusImage) {
+        this.statusImage = statusImage;
     }
 
     public String getDirectory() {
