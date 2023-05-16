@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <HBox minHeight="800.0" minWidth="1300.0" prefHeight="800.0" style="-fx-background-color: #BCCEF8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.iae.ce316.Controller">
    <children>
@@ -81,7 +82,14 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50; -fx-border-color: #DFDFDF; -fx-border-radius: 50;" VBox.vgrow="ALWAYS" />
+                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 50; -fx-border-color: #DFDFDF; -fx-border-radius: 50;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="No text has been added here yet, since the project is still in development process." translateX="200.0" translateY="150.0" wrappingWidth="782.30859375">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children></VBox>
                      </children>
                      <padding>
                         <Insets bottom="200.0" left="50.0" right="50.0" top="70.0" />

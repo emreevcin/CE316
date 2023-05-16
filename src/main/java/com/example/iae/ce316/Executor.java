@@ -28,12 +28,20 @@ public class Executor {
             pb.command("cmd.exe", "/c", command);
             try {
                 Process p = pb.start();
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String command2 = commands[1];
+            pb.command("cmd.exe", "/c", command2);
+            try {
+                Process p = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); // Read the output of the process
                 String line ;
                 while ((line = reader.readLine()) != null){
                     stringBuilder.append(line);
                 }
-                exitCode = String.valueOf(p.waitFor());
+                exitCode= String.valueOf(p.waitFor());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -43,17 +51,23 @@ public class Executor {
             pb.command("cmd.exe", "/c", command);
             try {
                 Process p = pb.start();
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String command2 = commands[1];
+            pb.command("cmd.exe", "/c", command2);
+            try {
+                Process p = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); // Read the output of the process
                 String line ;
                 while ((line = reader.readLine()) != null){
                     stringBuilder.append(line);
                 }
-                exitCode = String.valueOf(p.waitFor());
+                exitCode= String.valueOf(p.waitFor());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
         else if (lang.equals("Java")) {
             String command = commands[0];
@@ -119,12 +133,20 @@ public class Executor {
             pb.command("cmd.exe", "/c", command);
             try {
                 Process p = pb.start();
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String command2 = commands[1];
+            pb.command("cmd.exe", "/c", command2);
+            try {
+                Process p = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); // Read the output of the process
                 String line ;
                 while ((line = reader.readLine()) != null){
                     stringBuilder.append(line);
                 }
-                exitCode = String.valueOf(p.waitFor());
+                exitCode= String.valueOf(p.waitFor());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -134,17 +156,23 @@ public class Executor {
             pb.command("cmd.exe", "/c", command);
             try {
                 Process p = pb.start();
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String command2 = commands[1];
+            pb.command("cmd.exe", "/c", command2);
+            try {
+                Process p = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream())); // Read the output of the process
                 String line ;
                 while ((line = reader.readLine()) != null){
                     stringBuilder.append(line);
                 }
-                exitCode = String.valueOf(p.waitFor());
+                exitCode= String.valueOf(p.waitFor());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
         else if (lang.equals("Java")) {
             String command = commands[0];

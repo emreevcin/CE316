@@ -2,6 +2,8 @@ package com.example.iae.ce316;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Configuration {
     private String title ;
@@ -108,11 +110,25 @@ public class Configuration {
 
         if(lang.equals("C")){
             // for every file in the directory with a suffix of .c, add it to the command
-            command1 ="gcc "+filesString +" " +lib +" " +args;
+            String[] parts = lib.split("\\s+");
+            String filename = parts[1];
+            command1 ="gcc " + filesString + " " + lib;
+            command2 = filename + " " + args;
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("C++")) {
-            command1 ="g++ "+filesString +" " +lib +" " +args;
+
+            String[] parts = lib.split("\\s+");
+            String outputFileName = "";
+
+            for (int i = 0; i < parts.length - 1; i++) {
+                if (parts[i].equals("-o")) {
+                    outputFileName = parts[i + 1];
+                    break;
+                }
+            }
+            command1 ="g++ "+ lib + " " + filesString;
+            command2 = outputFileName + " " + args;
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("Python")) {

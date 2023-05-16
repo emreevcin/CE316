@@ -27,8 +27,6 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     // TODO : Help UI and navigations on controller ( REQ2)
     // TODO: (export and import)-> configuration and (save and open) -> project ---- Last step (REQ5 & 10)
-    // TODO: diğer programlama dilleri ve argümantlarla hiç denemedi program denenmesi lazım bug-free olmalı
-    // TODO: REQ7/8- diğer dillerde denencek
     // TODO: File names (submissions -> projects) -> means : src/submission actually works but not for all submissions that has same configurations with different projects with same zip file
      // database
     Database d = Database.getInstance();
@@ -396,6 +394,8 @@ public class Controller implements Initializable {
         configBox.getItems().add(configuration.getTitle());
 
         configuration.setOutput(info.get("output"));
+
+        System.out.println("....." + configuration.getOutput());
         d.addConfiguration(configuration);
 
         configTitle.clear();
@@ -419,6 +419,7 @@ public class Controller implements Initializable {
         }
         Configuration config = findConfiguration(configBox.getValue());
         Project p = new Project(title,config, config.getOutput());
+        System.out.println(config.getOutput() + ".....");
         p.setConfigOutput(config.getOutput());
         d.addProject(p);
         projectBoxResults.getItems().add(p.getTitle());
@@ -597,6 +598,8 @@ public class Controller implements Initializable {
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
 
         configuration.setOutput(info.get("output"));
+
+        System.out.println("....." + configuration.getOutput());
 
         d.updateConfiguration(configuration, configurationID);
         editLabel.setText(title);
