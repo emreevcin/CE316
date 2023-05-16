@@ -483,18 +483,43 @@ public class Controller implements Initializable {
                 title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3E54AC; -fx-font-family: \"Segoe UI\";");
                 ImageView delete = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/delete.png"))));
                 ImageView edit = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/edit.png"))));
+                ImageView export = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/export.png"))));
                 delete.setFitHeight(20);
                 delete.setFitWidth(20);
                 edit.setFitHeight(20);
                 edit.setFitWidth(20);
+                export.setFitHeight(20);
+                export.setFitWidth(20);
                 Button deleteButton = new Button();
                 Button editButton = new Button();
+                Button exportButton = new Button();
                 deleteButton.setGraphic(delete);
                 editButton.setGraphic(edit);
-                deleteButton.setStyle("-fx-background-color: transparent;");
-                editButton.setStyle("-fx-background-color: transparent;");
+                exportButton.setGraphic(export);
+                deleteButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; ");
+                editButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; ");
+                exportButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; ");
+                // add hover effect
+                deleteButton.setOnMouseEntered(e -> {
+                    deleteButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #3E54AC; ");
+                });
+                deleteButton.setOnMouseExited(e -> {
+                    deleteButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; ");
+                });
+                editButton.setOnMouseEntered(e -> {
+                    editButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #3E54AC; ");
+                });
+                editButton.setOnMouseExited(e -> {
+                    editButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; ");
+                });
+                exportButton.setOnMouseEntered(e -> {
+                    exportButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #3E54AC; ");
+                });
+                exportButton.setOnMouseExited(e -> {
+                    exportButton.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; ");
+                });
 
-                buttons.getChildren().addAll(deleteButton, editButton);
+                buttons.getChildren().addAll(deleteButton, editButton,exportButton);
                 buttons.setAlignment(Pos.CENTER_RIGHT);
                 buttons.setSpacing(10);
                 buttons.maxHeight(30);
@@ -527,6 +552,14 @@ public class Controller implements Initializable {
                     editConfig = config;
                     editLabel = title;
                     openEditConfiguration(config);
+                });
+                exportButton.setOnAction(e -> {
+                    Configuration config = findConfiguration(title.getText());
+                    if(config == null){
+                        return;
+                    }
+                    // TODO : make a function to export configuration
+                    //  exportConfiguration(config);
                 });
 
                 hBox.getChildren().addAll(title, buttons);
