@@ -116,25 +116,14 @@ public class Configuration {
         String filesString = sb.toString();
 
         if(lang.equals("C")){
-            String[] parts = lib.split("\\s+");
-            String filename = parts[1];
-            command1 ="gcc " + filesString + " " + lib;
-            command2 = filename + " " + args;
+            command1 ="gcc -w " + filesString + " -o app.exe " + lib;
+            command2 =  "app.exe " + args;
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("C++")) {
 
-            String[] parts = lib.split("\\s+");
-            String outputFileName = "";
-
-            for (int i = 0; i < parts.length - 1; i++) {
-                if (parts[i].equals("-o")) {
-                    outputFileName = parts[i + 1];
-                    break;
-                }
-            }
-            command1 ="g++ "+ lib + " " + filesString;
-            command2 = outputFileName + " " + args;
+            command1 ="g++ -w "+ lib + " -o app.exe " + filesString;
+            command2 = "app.exe " + args;
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("Python")) {
@@ -142,8 +131,8 @@ public class Configuration {
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("Java")) {
-            command1= "javac "+filesString +" "+args;
-            command2 = "java "+filesString +" "+args;
+            command1= "javac "+filesString;
+            command2 = "java "+filesString +" " +args;
             commands[0] = command1;
             commands[1] = command2;
         }

@@ -388,13 +388,11 @@ public class Controller implements Initializable {
 
         ZipHandler.unzip(new File(filePath),0,title);
 
-        String directory = "configurations/"+title;
+        String directory = "configurations"+ File.separator +title;
 
 
         Configuration configuration = new Configuration(title,langBox.getValue(),commandLib,commandArgs,directory);
 
-
-        JsonFileHandler.createJSONFile(configuration);
 
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
         configurationList.add(configuration);
@@ -403,6 +401,8 @@ public class Controller implements Initializable {
         configuration.setOutput(info.get("output"));
 
         d.addConfiguration(configuration);
+
+        JsonFileHandler.createJSONFile(configuration);
 
         configTitle.clear();
         configCommandLib.clear();
@@ -471,7 +471,7 @@ public class Controller implements Initializable {
         resultTable.getItems().clear();
         resultTable.getItems().addAll(p.getSubmissions());
         configOutput.setText(p.getConfiguration().getOutput());
-
+        submissionOutput.clear();
     }
     public void configPageButtonHandler() {
         if(configPageAdd.isVisible()){// if list is not visible , make it visible
@@ -666,11 +666,12 @@ public class Controller implements Initializable {
         configuration.setCommands(Configuration.makeCommand(lang,lib,args,configuration.getDirectory()));
 
 
-        JsonFileHandler.createJSONFile(configuration);
+
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
 
         configuration.setOutput(info.get("output"));
 
+        JsonFileHandler.createJSONFile(configuration);
 
         d.updateConfiguration(configuration, configurationID);
         editLabel.setText(title);
