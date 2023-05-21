@@ -472,7 +472,7 @@ public class Controller implements Initializable {
         resultTable.getItems().clear();
         resultTable.getItems().addAll(p.getSubmissions());
         configOutput.setText(p.getConfiguration().getOutput());
-
+        submissionOutput.clear();
     }
     public void configPageButtonHandler() {
         if(configPageAdd.isVisible()){// if list is not visible , make it visible
