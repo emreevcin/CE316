@@ -95,7 +95,7 @@ public class Configuration {
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
-                if(child.getName().endsWith(".c")){
+                if(child.getName().endsWith(".c") || child.getName().endsWith(".h")){
                     sb.append(child.getName());
                     sb.append(" ");
                 }
@@ -116,25 +116,13 @@ public class Configuration {
         String filesString = sb.toString();
 
         if(lang.equals("C")){
-            String[] parts = lib.split("\\s+");
-            String filename = parts[1];
             command1 ="gcc " + filesString + " " + lib;
-            command2 = filename + " " + args;
+            command2 = "app.exe " + args;
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("C++")) {
-
-            String[] parts = lib.split("\\s+");
-            String outputFileName = "";
-
-            for (int i = 0; i < parts.length - 1; i++) {
-                if (parts[i].equals("-o")) {
-                    outputFileName = parts[i + 1];
-                    break;
-                }
-            }
-            command1 ="g++ "+ lib + " " + filesString;
-            command2 = outputFileName + " " + args;
+            command1 ="g++ "+ lib + "-o app.exe " + filesString;
+            command2 ="app.exe " + args;
             commands[0] = command1;
             commands[1] = command2;
         } else if (lang.equals("Python")) {
