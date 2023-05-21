@@ -151,7 +151,7 @@ public class Controller implements Initializable {
         errorCol.setCellValueFactory(new PropertyValueFactory<>("error"));
         resultTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-               submissionOutput.setText(newSelection.getOutput());
+                submissionOutput.setText(newSelection.getOutput());
             }
         });
 
@@ -388,19 +388,20 @@ public class Controller implements Initializable {
 
         ZipHandler.unzip(new File(filePath),0,title);
 
-        String directory = "configurations/"+title;
+        String directory = "configurations"+File.separator+title;
 
 
         Configuration configuration = new Configuration(title,langBox.getValue(),commandLib,commandArgs,directory);
 
 
-        JsonFileHandler.createJSONFile(configuration);
-
         HashMap<String,String> info = Executor.executeConfiguration(configuration);
+
         configurationList.add(configuration);
         configBox.getItems().add(configuration.getTitle());
 
         configuration.setOutput(info.get("output"));
+        System.out.println(configuration.getOutput());
+        JsonFileHandler.createJSONFile(configuration);
 
         d.addConfiguration(configuration);
 
@@ -644,9 +645,9 @@ public class Controller implements Initializable {
                 }
 
                 if(child.getName().equals(title)){
-                       showAlert("Error","Configuration with the same name already exists!","Please choose a different name.");
-                       configFileMap.remove(fileName);
-                       return;
+                    showAlert("Error","Configuration with the same name already exists!","Please choose a different name.");
+                    configFileMap.remove(fileName);
+                    return;
                 }
 
             }
