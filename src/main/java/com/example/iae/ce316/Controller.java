@@ -18,6 +18,9 @@ import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -240,7 +243,7 @@ public class Controller implements Initializable {
         if(!suffix.equals(".zip")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("File type not supported");
+            alert.setHeaderText("File Type Not Supported");
             alert.setContentText("Please select a .zip file");
             alert.showAndWait();
             return null;
@@ -264,12 +267,12 @@ public class Controller implements Initializable {
         for(File f : files){
             String suffix = f.getName().substring(f.getName().lastIndexOf("."));
             if(!suffix.equals(".zip")){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("File type not supported");
-                alert.setContentText("Please select a .zip file");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("File Type Not Supported");
+                alert.setContentText("No action taken for " + f.getName());
                 alert.showAndWait();
-                return null;
+                continue;
             }
             fileMap.put(f.getName(),f.getAbsolutePath());
         }
@@ -558,7 +561,29 @@ public class Controller implements Initializable {
                         throw new RuntimeException(ex);
                     }
 
+                    String directoryPath = "configurations" + File.separator;
+                    File dir = new File("configurations" + File.separator);
+                    File[] directoryListing = dir.listFiles();
+                    if(directoryListing != null){
+                        for(File child : directoryListing){
+                            if (child.getName().equals(c.getTitle())) {
+                                directoryPath += child.getName();
+                                try {
+                                    Path directory = Paths.get(directoryPath);
+                                    Files.walk(directory)
+                                            .sorted(java.util.Comparator.reverseOrder())
+                                            .map(Path::toFile)
+                                            .forEach(java.io.File::delete);
+                                } catch (IOException error) {
+                                    error.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+
                 });
+
+
                 editButton.setOnAction(e -> {
                     Configuration config = findConfiguration(title.getText());
                     if(config == null){
