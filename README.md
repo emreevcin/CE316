@@ -10,6 +10,7 @@ The Integrated Assignment Environment (IAE) is a software application that provi
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Documents](#documents)
+- [Contributors](#contributors)
 
 ## Overview
 
@@ -62,6 +63,9 @@ Links are listed below:
 - Task Distribution : https://docs.google.com/spreadsheets/d/12nF6nm-K8vbMSe8-AfGcJvamBdbStjslvPfgJbN2wi8/edit?usp=sharing
 - Final Report      : https://docs.google.com/document/d/1IqM21_tv8EcXStsEo7bejVYXoE19YuJn6Tr8yziXh6Q/edit?usp=sharing
 
-
-
+## Contributors
+- Emre EVCİN
+- Emre ÖZOĞUL
+- Mehmet Eren SÖNMEZ
+- Nihan Yüksel
 
