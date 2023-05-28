@@ -27,8 +27,10 @@ The Integrated Assignment Environment is designed to facilitate the compilation 
 
 ## Installation
 
-To install and run the The Integrated Assignment Environment (IAE), follow these steps:
+To install: 
+1. You can install installer from Relases : https://github.com/emreevcin/CE316/releases
 
+To run the The Integrated Assignment Environment (IAE) in the IDE, follow these steps:
 1. Clone the repository: `git clone https://github.com/emreevcin/CE316.git`
 2. Install the required dependencies with Maven.
 3. Build the project using the provided build scripts or IDE tools.
@@ -59,5 +61,7 @@ Links are listed below:
 - Design Document   : https://docs.google.com/document/d/1APKcSnYQ5uVG45-skQD425-vZdsy76JdER_168-1bJo/edit?usp=sharing
 - Task Distribution : https://docs.google.com/spreadsheets/d/12nF6nm-K8vbMSe8-AfGcJvamBdbStjslvPfgJbN2wi8/edit?usp=sharing
 - Final Report      : https://docs.google.com/document/d/1IqM21_tv8EcXStsEo7bejVYXoE19YuJn6Tr8yziXh6Q/edit?usp=sharing
+
+
 
 
